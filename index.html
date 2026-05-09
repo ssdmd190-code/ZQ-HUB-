@@ -3,167 +3,335 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZQ HUB | Official Scripts</title>
+    <title>ZQ HUB | Official Website</title>
     <style>
         :root {
             --primary: #6a1b9a;
             --accent: #bb86fc;
-            --bg: #0f0f0f;
-            --card-bg: #1a1a1a;
+            --bg-overlay: rgba(15, 15, 15, 0.9);
+            --card-bg: rgba(26, 26, 26, 0.95);
+            --transition: all 0.3s ease;
         }
+
         body { 
-            background-color: var(--bg); 
+            margin: 0;
             color: #ffffff; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0;
-            padding: 0;
+            background: url('https://raw.githubusercontent.com/ssdmd190-code/ZQ-HUB-/main/logo.png') no-repeat center center fixed;
+            background-size: cover;
         }
+
+        .body-overlay {
+            background-color: var(--bg-overlay);
+            min-height: 100vh;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+
         .header { 
             background: var(--primary); 
-            padding: 30px; 
+            padding: 40px; 
             text-align: center;
-            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.5);
-            border-bottom: 2px solid var(--accent);
+            border-bottom: 3px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+
+        .scripts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
         
-        /* البحث */
-        .search-container { margin-bottom: 30px; }
-        #searchInput {
-            width: 100%;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 1px solid var(--primary);
-            background: #222;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        .script-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #333;
+            transition: var(--transition);
+        }
+        .script-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 15px 35px rgba(106, 27, 154, 0.4); }
+        .script-card img { width: 140px; height: 140px; border-radius: 15px; margin-bottom: 15px; }
+
+        /* تعديل حجم النافذة لتكون كبيرة وتستوعب السكربت */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.95);
+        }
+        .modal-content {
+            background: #111; margin: 2% auto; padding: 30px; width: 90%; max-width: 850px;
+            border-radius: 20px; border: 2px solid var(--primary); position: relative;
+            max-height: 90vh; overflow-y: auto;
         }
 
-        /* المربعات والظلال */
-        .card { 
-            background: var(--card-bg); 
-            border: 1px solid #333; 
-            border-radius: 15px; 
-            padding: 25px; 
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(106, 27, 154, 0.2);
-            transition: 0.3s;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(106, 27, 154, 0.3); }
-
-        .key { color: var(--accent); font-weight: bold; }
-        pre { 
-            background: #000; 
-            padding: 15px; 
-            border-radius: 10px; 
-            text-align: left; 
-            overflow-x: auto; 
-            direction: ltr;
-            border: 1px solid #222;
-        }
-
-        /* الأزرار */
         .btn { 
-            background: var(--primary); 
-            color: white; 
-            padding: 12px 25px; 
-            text-decoration: none; 
-            border-radius: 10px; 
-            border: none;
-            cursor: pointer; 
-            font-weight: bold;
-            transition: 0.3s;
+            background: var(--primary); color: white; padding: 15px 30px; border: none; 
+            border-radius: 12px; cursor: pointer; font-weight: bold; transition: var(--transition);
+            text-decoration: none; display: inline-block; font-size: 1rem;
         }
-        .btn:hover { background: #8e24aa; box-shadow: 0 0 15px var(--accent); }
+        .btn:hover { background: var(--accent); transform: scale(1.05); }
 
-        /* قسم الديسكورد */
-        .discord-section {
-            background: #2c2f33;
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 50px;
-            border-left: 5px solid #7289da;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        pre { 
+            background: #050505; 
+            padding: 20px; 
+            border-radius: 12px; 
+            text-align: left; 
+            direction: ltr; 
+            overflow-x: auto; 
+            border: 1px solid #222;
+            color: #00ff00; /* لون برمجي */
+            font-family: 'Consolas', monospace;
+            line-height: 1.5;
+            margin-top: 20px;
         }
-        .discord-info { display: flex; align-items: center; }
-        .discord-logo { width: 50px; height: 50px; margin-left: 15px; }
-        .discord-btn { background: #7289da; }
-        .discord-btn:hover { background: #5b70b3; }
+
+        .close-modal { position: absolute; left: 25px; top: 20px; font-size: 35px; cursor: pointer; color: var(--accent); }
+
+        .info-card {
+            border-radius: 15px; padding: 25px; display: flex; align-items: center;
+            justify-content: space-between; margin-top: 25px;
+        }
+        .discord-card { background: #5865F2; }
+        .team-card { background: #222; border-right: 5px solid var(--accent); }
     </style>
 </head>
 <body>
 
+<div class="body-overlay">
     <div class="header">
-        <h1>ZQ HUB | Scripts</h1>
-        <p>أفضل السكربتات لسيرفرنا الخاص</p>
+        <h1 style="font-size: 3rem; margin: 0;">ZQ HUB</h1>
+        <p style="letter-spacing: 2px; opacity: 0.8;">PREMIUM ROBLOX SCRIPTS</p>
     </div>
 
     <div class="container">
-        <!-- شريط البحث -->
-        <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: Timebomb)...">
-        </div>
-
-        <!-- السكربتات -->
-        <div id="scriptsList">
-            <div class="card script-item">
-                <h2 class="script-name">Timebomb Script</h2>
-                <p>المفتاح: <span class="key">ZQ</span></p>
-                <pre id="code1">-- ZQ HUB Timebomb Script
-print("Timebomb Loaded!")
-loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
-                <button class="btn" onclick="copy('code1')">نسخ السكربت</button>
-            </div>
-
-            <div class="card script-item">
-                <h2 class="script-name">Auto Farm Script</h2>
-                <p>المفتاح: <span class="key">FREE</span></p>
-                <pre id="code2">-- ZQ HUB Auto Farm
-print("Auto Farm Active")</pre>
-                <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
+        <div class="scripts-grid">
+            <!-- الكرت الرئيسي للسكربت -->
+            <div class="script-card" onclick="openModal('v7Modal')">
+                <img src="https://tr.rbxcdn.com/15f0601614e2469446f04128548903e1/150/150/Image/Jpeg" alt="ZQ V7">
+                <h3>ZQ HUB V7 STABLE</h3>
+                <p>قائمة كاملة (ESP, Track, FPS)</p>
+                <span style="color: var(--accent);">اضغط لعرض السكربت</span>
             </div>
         </div>
 
-        <!-- مربع الديسكورد -->
-        <div class="discord-section">
-            <div class="discord-info">
-                <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo" class="discord-logo">
-                <div>
-                    <h3 style="margin:0;">انضم إلى سيرفرنا</h3>
-                    <p style="margin:0; font-size: 0.9rem; color: #ccc;">كن أول من يحصل على التحديثات</p>
-                </div>
+        <div class="info-card discord-card">
+            <div>
+                <h3 style="margin:0;">DISCORD COMMUNITY</h3>
+                <p style="margin:5px 0 0 0;">انضم للحصول على التحديثات والمفتاح</p>
             </div>
-            <a href="https://discord.gg/guw2ac94E" target="_blank" class="btn discord-btn">دخول السيرفر</a>
+            <a href="https://discord.gg/guw2ac94E" target="_blank" class="btn" style="background:white; color:#5865F2;">انضم الآن</a>
+        </div>
+
+        <div class="info-card team-card">
+            <div>
+                <h3 style="margin:0;">ZQ TEAM</h3>
+                <p style="margin:5px 0 0 0;">QWA | ZEN | SHA | AST</p>
+            </div>
+            <a href="https://guns.lol/zqahub" target="_blank" class="btn">حسابات الفريق</a>
         </div>
     </div>
+</div>
 
-    <script>
-        // وظيفة البحث
-        function searchFunction() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let items = document.getElementsByClassName('script-item');
-            
-            for (let i = 0; i < items.length; i++) {
-                let name = items[i].getElementsByClassName('script-name')[0].innerText.toLowerCase();
-                if (name.includes(input)) {
-                    items[i].style.display = "";
-                } else {
-                    items[i].style.display = "none";
-                }
-            }
-        }
+<!-- النافذة الكبيرة للسكربت -->
+<div id="v7Modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('v7Modal')">&times;</span>
+        <h2 style="text-align:center; color: var(--accent);">ZQ HUB V7 STABLE</h2>
+        <p style="text-align:center;">المفتاح المطلوب: <strong style="color: #fff;">ZQ</strong></p>
+        
+        <div style="text-align:center; margin-bottom: 15px;">
+            <button class="btn" onclick="copyCode('v7Code')">نسخ السكربت بالكامل</button>
+        </div>
 
-        // وظيفة النسخ
-        function copy(id) {
-            const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text);
-            alert("تم نسخ السكربت بنجاح!");
-        }
-    </script>
+        <pre id="v7Code">
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+if game.CoreGui:FindFirstChild("ZQ_HUB_V7_STABLE") then game.CoreGui.ZQ_HUB_V7_STABLE:Destroy() end
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ZQ_HUB_V7_STABLE"
+ScreenGui.Parent = game.CoreGui
+ScreenGui.ResetOnSpawn = false
+
+local function PlayClick()
+    local s = Instance.new("Sound", ScreenGui)
+    s.SoundId = "rbxassetid://7140352524" 
+    s.Volume = 2; s:Play()
+    game:GetService("Debris"):AddItem(s, 1)
+end
+
+-- [ نظام السحب ]
+local function MakeAdvanced(frame)
+    local dragging, dragInput, dragStart, startPos
+    frame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true; dragStart = input.Position; startPos = frame.Position
+        end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+    frame.InputEnded:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then dragging = false end end)
+end
+
+-- [ إنشاء القوائم الشفافة ]
+local function CreatePopup(name, color, isToggle, pos)
+    local p = Instance.new("Frame", ScreenGui)
+    p.Size = UDim2.new(0, 160, 0, 80); p.Position = pos; p.Visible = false; p.BackgroundColor3 = Color3.new(0,0,0); p.BackgroundTransparency = 0.5
+    Instance.new("UICorner", p)
+    
+    local title = Instance.new("TextLabel", p)
+    title.Size = UDim2.new(1, 0, 0.4, 0); title.Text = name; title.TextColor3 = Color3.new(1,1,1); title.Font = Enum.Font.GothamBold; title.BackgroundTransparency = 1; title.TextScaled = true
+    
+    local content
+    if isToggle then
+        content = Instance.new("TextButton", p)
+        content.Size = UDim2.new(0.8, 0, 0.4, 0); content.Position = UDim2.new(0.1, 0, 0.5, 0); content.BackgroundColor3 = Color3.fromRGB(150, 0, 0); content.Text = "OFF"; content.TextColor3 = Color3.new(1,1,1); content.Font = Enum.Font.GothamBold; Instance.new("UICorner", content)
+    else
+        content = Instance.new("TextLabel", p)
+        content.Size = UDim2.new(1, 0, 0.5, 0); content.Position = UDim2.new(0, 0, 0.45, 0); content.TextColor3 = color; content.Font = Enum.Font.GothamBold; content.BackgroundTransparency = 1; content.Text = "..."; content.TextScaled = true
+    end
+    MakeAdvanced(p)
+    return p, content
+end
+
+local PopTrack, BtnPopTrack = CreatePopup("TRACKING", Color3.fromRGB(0, 120, 255), true, UDim2.new(0.1, 0, 0.1, 0))
+local PopESP, BtnPopESP = CreatePopup("ESP", Color3.fromRGB(255, 50, 50), true, UDim2.new(0.1, 0, 0.25, 0))
+local PopFPS, LabFPS = CreatePopup("FPS", Color3.new(1,1,1), false, UDim2.new(0.8, 0, 0.1, 0))
+local PopPing, LabPing = CreatePopup("PING", Color3.new(1,1,1), false, UDim2.new(0.8, 0, 0.25, 0))
+
+-- [ الواجهة الرئيسية ونظام المفتاح ]
+local KeyFrame = Instance.new("Frame", ScreenGui); KeyFrame.Size = UDim2.new(0, 400, 0, 280); KeyFrame.Position = UDim2.new(0.5, -200, 0.4, -140); KeyFrame.BackgroundColor3 = Color3.fromRGB(15,15,15); Instance.new("UICorner", KeyFrame); MakeAdvanced(KeyFrame)
+local KeyTitle = Instance.new("TextLabel", KeyFrame); KeyTitle.Size = UDim2.new(1, 0, 0, 50); KeyTitle.Text = "ZQ HUB | KEY SYSTEM"; KeyTitle.TextColor3 = Color3.fromRGB(0,170,255); KeyTitle.Font = Enum.Font.GothamBold; KeyTitle.BackgroundTransparency = 1; KeyTitle.TextSize = 22
+local KeyLabel = Instance.new("TextLabel", KeyFrame); KeyLabel.Size = UDim2.new(0, 60, 0, 40); KeyLabel.Position = UDim2.new(0.1, 0, 0.25, 0); KeyLabel.Text = "Key:"; KeyLabel.TextColor3 = Color3.new(1,1,1); KeyLabel.Font = Enum.Font.GothamBold; KeyLabel.BackgroundTransparency = 1; KeyLabel.TextSize = 18
+local KeyInput = Instance.new("TextBox", KeyFrame); KeyInput.Size = UDim2.new(0.65, 0, 0, 40); KeyInput.Position = UDim2.new(0.25, 0, 0.25, 0); KeyInput.BackgroundColor3 = Color3.fromRGB(30,30,30); KeyInput.PlaceholderText = ""; KeyInput.Text = ""; KeyInput.TextColor3 = Color3.new(1,1,1); Instance.new("UICorner", KeyInput)
+local CheckBtn = Instance.new("TextButton", KeyFrame); CheckBtn.Size = UDim2.new(0.8, 0, 0, 45); CheckBtn.Position = UDim2.new(0.1, 0, 0.45, 0); CheckBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 215); CheckBtn.Text = "LOGIN"; CheckBtn.TextColor3 = Color3.new(1,1,1); CheckBtn.Font = Enum.Font.GothamBold; Instance.new("UICorner", CheckBtn)
+local KeyDiscordBtn = Instance.new("TextButton", KeyFrame); KeyDiscordBtn.Size = UDim2.new(0.8, 0, 0, 45); KeyDiscordBtn.Position = UDim2.new(0.1, 0, 0.65, 0); KeyDiscordBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242); KeyDiscordBtn.Text = "Discord Server (Get Key)"; KeyDiscordBtn.TextColor3 = Color3.new(1,1,1); KeyDiscordBtn.Font = Enum.Font.GothamBold; Instance.new("UICorner", KeyDiscordBtn)
+local KeyInfoLabel = Instance.new("TextLabel", KeyFrame); KeyInfoLabel.Size = UDim2.new(0.8, 0, 0, 30); KeyInfoLabel.Position = UDim2.new(0.1, 0, 0.82, 0); KeyInfoLabel.Text = "You must get the key from the server"; KeyInfoLabel.TextColor3 = Color3.fromRGB(200, 200, 200); KeyInfoLabel.Font = Enum.Font.Gotham; KeyInfoLabel.BackgroundTransparency = 1; KeyInfoLabel.TextSize = 14
+
+local MinBtn = Instance.new("TextButton", ScreenGui); MinBtn.Size = UDim2.new(0, 70, 0, 70); MinBtn.Position = UDim2.new(0.05, 0, 1.2, 0); MinBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 215); MinBtn.Text = "Z"; MinBtn.TextColor3 = Color3.new(1,1,1); MinBtn.Font = Enum.Font.GothamBold; MinBtn.TextSize = 30; MinBtn.Visible = false; Instance.new("UICorner", MinBtn).CornerRadius = UDim.new(1,0); MakeAdvanced(MinBtn)
+local MainFrame = Instance.new("Frame", ScreenGui); MainFrame.Size = UDim2.new(0, 550, 0, 380); MainFrame.Position = UDim2.new(0.5, -275, 1.5, 0); MainFrame.BackgroundColor3 = Color3.fromRGB(10,10,10); MainFrame.Visible = false; Instance.new("UICorner", MainFrame); MakeAdvanced(MainFrame)
+
+local function CreateCat(name, xPos)
+    local f = Instance.new("Frame", MainFrame); f.Size = UDim2.new(0.3, 0, 0.8, 0); f.Position = UDim2.new(xPos, 0, 0.15, 0); f.BackgroundColor3 = Color3.fromRGB(20,20,20); Instance.new("UICorner", f)
+    local l = Instance.new("TextLabel", f); l.Size = UDim2.new(1,0,0,35); l.Text = name; l.TextColor3 = Color3.fromRGB(0,170,255); l.Font = Enum.Font.GothamBold; l.BackgroundTransparency = 1
+    return f
+end
+local CatAttack = CreateCat("ATTACK", 0.02)
+local CatStats = CreateCat("STATS", 0.35)
+local CatSocial = CreateCat("SOCIAL", 0.68)
+
+local function AddBtn(parent, txt, y)
+    local b = Instance.new("TextButton", parent); b.Size = UDim2.new(0.9,0,0,45); b.Position = UDim2.new(0.05,0,y,0); b.BackgroundColor3 = Color3.fromRGB(40,40,40); b.Text = txt; b.TextColor3 = Color3.new(1,1,1); b.Font = Enum.Font.GothamBold; Instance.new("UICorner", b)
+    return b
+end
+
+local MTrack = AddBtn(CatAttack, "Track: OFF", 0.15)
+local MESP = AddBtn(CatAttack, "ESP: OFF", 0.3)
+local MFPS = AddBtn(CatStats, "Show FPS", 0.15)
+local MPing = AddBtn(CatStats, "Show Ping", 0.3)
+local BSnap = AddBtn(CatSocial, "Snapchat", 0.15)
+local BDisc = AddBtn(CatSocial, "Discord", 0.3)
+
+-- [ البرمجة والمنطق ]
+local Tracking, ESP_Active = false, false
+
+local function UpdateVisuals()
+    MTrack.Text = "Track: "..(Tracking and "ON" or "OFF")
+    MTrack.TextColor3 = Tracking and Color3.new(0,1,0) or Color3.new(1,1,1)
+    MESP.Text = "ESP: "..(ESP_Active and "ON" or "OFF")
+    MESP.TextColor3 = ESP_Active and Color3.new(0,1,0) or Color3.new(1,1,1)
+    BtnPopTrack.Text = Tracking and "ON" or "OFF"
+    BtnPopTrack.BackgroundColor3 = Tracking and Color3.fromRGB(0, 180, 0) or Color3.fromRGB(150, 0, 0)
+    BtnPopESP.Text = ESP_Active and "ON" or "OFF"
+    BtnPopESP.BackgroundColor3 = ESP_Active and Color3.fromRGB(0, 180, 0) or Color3.fromRGB(150, 0, 0)
+end
+
+-- الأزرار
+KeyDiscordBtn.MouseButton1Click:Connect(function() PlayClick(); setclipboard("https://discord.gg/guw2ac94E"); KeyDiscordBtn.Text = "Link Copied! ✅"; task.wait(2); KeyDiscordBtn.Text = "Discord Server (Get Key)" end)
+MTrack.MouseButton1Click:Connect(function() PlayClick(); PopTrack.Visible = not PopTrack.Visible; Tracking = PopTrack.Visible; UpdateVisuals() end)
+MESP.MouseButton1Click:Connect(function() PlayClick(); PopESP.Visible = not PopESP.Visible; ESP_Active = PopESP.Visible; UpdateVisuals() end)
+BtnPopTrack.MouseButton1Click:Connect(function() PlayClick(); Tracking = not Tracking; UpdateVisuals() end)
+BtnPopESP.MouseButton1Click:Connect(function() PlayClick(); ESP_Active = not ESP_Active; UpdateVisuals() end)
+MFPS.MouseButton1Click:Connect(function() PlayClick(); PopFPS.Visible = not PopFPS.Visible end)
+MPing.MouseButton1Click:Connect(function() PlayClick(); PopPing.Visible = not PopPing.Visible end)
+BSnap.MouseButton1Click:Connect(function() PlayClick(); setclipboard("https://www.snapchat.com/add/ricekaz1"); BSnap.Text = "Copied! ✅"; task.wait(2); BSnap.Text = "Snapchat" end)
+BDisc.MouseButton1Click:Connect(function() PlayClick(); setclipboard("https://discord.gg/guw2ac94E"); BDisc.Text = "Copied! ✅"; task.wait(2); BDisc.Text = "Discord" end)
+
+CheckBtn.MouseButton1Click:Connect(function()
+    if KeyInput.Text == "ZQ" then
+        PlayClick(); KeyFrame:Destroy(); MinBtn.Visible = true; MainFrame.Visible = true
+        TweenService:Create(MinBtn, TweenInfo.new(1.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Position = UDim2.new(0.05, 0, 0.5, -35)}):Play()
+    else
+        CheckBtn.Text = "WRONG KEY!"; CheckBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 0); task.wait(1); CheckBtn.Text = "LOGIN"; CheckBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+    end
+end)
+
+local Open = false
+MinBtn.MouseButton1Click:Connect(function()
+    PlayClick(); Open = not Open
+    TweenService:Create(MinBtn, TweenInfo.new(0.6, Enum.EasingStyle.Quart), {Rotation = MinBtn.Rotation + 360}):Play()
+    task.delay(0.2, function() MinBtn.Text = Open and "Q" or "Z" end)
+    local Target = Open and UDim2.new(0.5, -275, 0.3, 0) or UDim2.new(0.5, -275, 1.5, 0)
+    TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quart), {Position = Target}):Play()
+end)
+
+-- [ حلقة التحديث المستمر ]
+RunService.RenderStepped:Connect(function(dt)
+    if PopFPS.Visible then LabFPS.Text = math.floor(1/dt).." FPS" end
+    if PopPing.Visible then LabPing.Text = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString():match("%d+").." ms" end
+    
+    if Tracking then
+        local isMovingManual = UserInputService:IsKeyDown(Enum.KeyCode.W) or UserInputService:IsKeyDown(Enum.KeyCode.A) or UserInputService:IsKeyDown(Enum.KeyCode.S) or UserInputService:IsKeyDown(Enum.KeyCode.D)
+        if not isMovingManual then
+            local target, dist = nil, math.huge
+            for _, v in pairs(Players:GetPlayers()) do
+                if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health > 0 then
+                    local d = (v.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+                    if d < dist then dist = d; target = v.Character end
+                end
+            end
+            if target then LocalPlayer.Character.Humanoid:MoveTo(target.HumanoidRootPart.Position) end
+        end
+    end
+
+    for _, v in pairs(Players:GetPlayers()) do
+        if v ~= LocalPlayer and v.Character then
+            local highlight = v.Character:FindFirstChild("ZQ_ESP")
+            if ESP_Active then
+                if not highlight then
+                    highlight = Instance.new("Highlight")
+                    highlight.Name = "ZQ_ESP"
+                    highlight.Parent = v.Character
+                    highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                    highlight.OutlineColor = Color3.new(1, 1, 1)
+                end
+            else
+                if highlight then highlight:Destroy() end
+            end
+        end
+    end
+end)
+        </pre>
+    </div>
+</div>
+
+<script>
+    function openModal(id) { document.getElementById(id).style.display = "block"; document.body.style.overflow = "hidden"; }
+    function closeModal(id) { document.getElementById(id).style.display = "none"; document.body.style.overflow = "auto"; }
+    
+    function copyCode(id) {
+        const text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text);
+        alert("تم نسخ السكربت بنجاح! الصقه في الأداة داخل اللعبة.");
+    }
+</script>
+
 </body>
 </html>
