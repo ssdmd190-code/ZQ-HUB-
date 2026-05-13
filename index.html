@@ -10,6 +10,7 @@
             --accent: #bb86fc;
             --bg: #0f0f0f;
             --card-bg: #1a1a1a;
+            --code-bg: #000000;
         }
         body { 
             background-color: var(--bg); 
@@ -17,153 +18,353 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
         .header { 
             background: var(--primary); 
-            padding: 30px; 
+            padding: 40px; 
             text-align: center;
-            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.5);
+            box-shadow: 0 10px 30px rgba(106, 27, 154, 0.4);
             border-bottom: 2px solid var(--accent);
         }
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
         
-        /* البحث */
-        .search-container { margin-bottom: 30px; }
+        /* قسم المطورين المتغير */
+        .creators-section {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .name-container { display: inline-block; min-width: 140px; text-align: right; }
+        .fade-text { transition: opacity 0.5s ease-in-out; color: var(--accent); }
+
+        /* إحصائيات السيرفر */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: rgba(106, 27, 154, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .stat-number { font-size: 1.8rem; font-weight: bold; color: var(--accent); display: block; }
+        .stat-label { color: #888; font-size: 0.9rem; }
+
+        /* البحث والاقتراحات */
+        .search-wrapper { position: relative; width: 90%; margin: 0 auto 40px auto; }
         #searchInput {
             width: 100%;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 1px solid var(--primary);
-            background: #222;
+            padding: 16px 25px;
+            border-radius: 30px;
+            border: 2px solid var(--primary);
+            background: #1a1a1a;
             color: white;
             font-size: 1rem;
             outline: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            box-sizing: border-box;
+            transition: 0.3s;
         }
+        #searchInput:focus { box-shadow: 0 0 15px var(--primary); }
+        .suggestions-box {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #1a1a1a;
+            border: 1px solid var(--primary);
+            border-radius: 15px;
+            margin-top: 5px;
+            display: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+        .suggestion-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: right;
+        }
+        .suggestion-item:hover { background: var(--primary); }
 
-        /* المربعات والظلال */
+        /* كرت السكربت */
+        .script-item { 
+            display: none; 
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 20px;
+        }
+        .script-item.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
         .card { 
             background: var(--card-bg); 
             border: 1px solid #333; 
-            border-radius: 15px; 
-            padding: 25px; 
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(106, 27, 154, 0.2);
+            border-radius: 20px; 
+            padding: 30px; 
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
+            position: relative;
+        }
+
+        /* سهم الرجوع */
+        .back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            color: #888;
+            font-size: 1.2rem;
             transition: 0.3s;
+            background: rgba(255,255,255,0.05);
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(106, 27, 154, 0.3); }
+        .back-arrow:hover { color: var(--accent); background: rgba(106, 27, 154, 0.4); transform: rotate(90deg); }
 
-        .key { color: var(--accent); font-weight: bold; }
-        pre { 
-            background: #000; 
-            padding: 15px; 
-            border-radius: 10px; 
-            text-align: left; 
-            overflow-x: auto; 
-            direction: ltr;
-            border: 1px solid #222;
-        }
-
-        /* الأزرار */
-        .btn { 
-            background: var(--primary); 
-            color: white; 
-            padding: 12px 25px; 
-            text-decoration: none; 
-            border-radius: 10px; 
-            border: none;
-            cursor: pointer; 
+        /* صندوق المفتاح الجديد */
+        .key-box {
+            background: #252525;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-right: 5px solid var(--accent);
+            color: var(--accent);
             font-weight: bold;
+            text-align: left;
+            direction: ltr;
+            letter-spacing: 1px;
+            font-family: monospace;
+        }
+        pre { background: var(--code-bg); padding: 20px; border-radius: 12px; overflow-x: auto; direction: ltr; color: #eee; border: 1px solid #222; }
+        
+        .btn-copy {
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            float: left;
             transition: 0.3s;
         }
-        .btn:hover { background: #8e24aa; box-shadow: 0 0 15px var(--accent); }
+        .btn-copy:hover { background: #8e24aa; transform: scale(1.05); }
 
-        /* قسم الديسكورد */
-        .discord-section {
-            background: #2c2f33;
+        /* قسم المميزات */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        .feature-item {
+            background: #151515;
+            padding: 25px;
             border-radius: 15px;
-            padding: 20px;
+            border-bottom: 3px solid var(--primary);
+            transition: 0.3s;
+        }
+        .feature-item:hover { background: #1a1a1a; }
+        .feature-item h3 { color: var(--accent); margin-top: 0; display: flex; align-items: center; gap: 10px; }
+
+        /* الديسكورد */
+        .discord-section {
+            background: linear-gradient(90deg, #23272a, #2c2f33);
+            border-radius: 20px;
+            padding: 25px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-top: 50px;
-            border-left: 5px solid #7289da;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            border-left: 6px solid #7289da;
         }
-        .discord-info { display: flex; align-items: center; }
-        .discord-logo { width: 50px; height: 50px; margin-left: 15px; }
-        .discord-btn { background: #7289da; }
-        .discord-btn:hover { background: #5b70b3; }
+        .discord-btn {
+            background: #7289da;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .discord-btn:hover { background: #5b70be; box-shadow: 0 0 15px rgba(114, 137, 218, 0.4); }
+
+        @media (max-width: 600px) {
+            .discord-section { flex-direction: column; gap: 20px; text-align: center; }
+            .btn-copy { float: none; width: 100%; }
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>ZQ HUB | Scripts</h1>
-        <p>أفضل السكربتات لسيرفرنا الخاص</p>
+        <p>اكتشف أقوى السكربتات الحصرية لدينا</p>
     </div>
 
     <div class="container">
-        <!-- شريط البحث -->
-        <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: Timebomb)...">
-        </div>
-
-        <!-- السكربتات -->
-        <div id="scriptsList">
-            <div class="card script-item">
-                <h2 class="script-name">Timebomb Script</h2>
-                <p>المفتاح: <span class="key">ZQ</span></p>
-                <pre id="code1">-- ZQ HUB Timebomb Script
-print("Timebomb Loaded!")
-loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
-                <button class="btn" onclick="copy('code1')">نسخ السكربت</button>
-            </div>
-
-            <div class="card script-item">
-                <h2 class="script-name">Auto Farm Script</h2>
-                <p>المفتاح: <span class="key">FREE</span></p>
-                <pre id="code2">-- ZQ HUB Auto Farm
-print("Auto Farm Active")</pre>
-                <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
+        
+        <!-- تبديل الأسماء -->
+        <div class="creators-section">
+            <span style="color: #fff;">By:</span>
+            <div class="name-container">
+                <span id="creator" class="fade-text">qwaw493</span>
             </div>
         </div>
 
-        <!-- مربع الديسكورد -->
+        <!-- إحصائيات السيرفر -->
+        <div id="statsSection" class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">4,120+</span>
+                <span class="stat-label">إجمالي الاستخدام</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="onlineUser">24</span>
+                <span class="stat-label">نشط الآن</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" style="color: #4caf50;">Safe ✅</span>
+                <span class="stat-label">حماية ضد الباند</span>
+            </div>
+        </div>
+
+        <!-- البحث -->
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" oninput="showSuggestions()" placeholder="ابحث عن سكربت (مثلاً: Timebomb)..." autocomplete="off">
+            <div id="suggestionsBox" class="suggestions-box"></div>
+        </div>
+
+        <!-- عرض السكربت المختار -->
+        <div id="scriptsContainer">
+            <!-- Timebomb Script -->
+            <div id="script-timebomb" class="card script-item">
+                <div class="back-arrow" onclick="goBack()" title="إغلاق">✕</div>
+                <h2 style="text-align: right; margin-top: 10px;">Timebomb Script</h2>
+                <!-- تحديث المفتاح بناءً على طلبك -->
+                <div class="key-box">Key: ZQHUB_829376_JSORCQ</div>
+                <pre id="code1">loadstring(game:HttpGet("https://pastebin.com/raw/d1Bc8Rax"))()</pre>
+                <button class="btn-copy" onclick="copy('code1')">نسخ الكود</button>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+
+        <!-- قسم المميزات -->
+        <div id="featuresSection" class="features-grid">
+            <div class="feature-item">
+                <h3>🛡️ سكربتات آمنة</h3>
+                <p>جميع الأكواد مشفرة ومحمية لضمان أفضل أداء دون تعليق أو مشاكل.</p>
+            </div>
+            <div class="feature-item">
+                <h3>🔄 تحديثات مستمرة</h3>
+                <p>نعمل على تحديث السكربتات أسبوعياً لتواكب آخر تحديثات الألعاب.</p>
+            </div>
+        </div>
+
+        <!-- ديسكورد -->
         <div class="discord-section">
-            <div class="discord-info">
-                <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo" class="discord-logo">
-                <div>
-                    <h3 style="margin:0;">انضم إلى سيرفرنا</h3>
-                    <p style="margin:0; font-size: 0.9rem; color: #ccc;">كن أول من يحصل على التحديثات</p>
-                </div>
+            <div style="display:flex; align-items:center;">
+                <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" width="40" style="margin-left:15px;">
+                <h3 style="margin:0;">انضم لمجتمعنا على ديسكورد</h3>
             </div>
-            <a href="https://discord.gg/guw2ac94E" target="_blank" class="btn discord-btn">دخول السيرفر</a>
+            <a href="https://discord.gg/YRYNjMQWu" target="_blank" class="discord-btn">انضم الآن</a>
         </div>
     </div>
 
     <script>
-        // وظيفة البحث
-        function searchFunction() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let items = document.getElementsByClassName('script-item');
+        // نظام تبديل الأسماء
+        const creators = ["qwaw493", "zennko", "astro_lol4", "s1133bj3"];
+        let currentIdx = 0;
+        setInterval(() => {
+            const el = document.getElementById("creator");
+            el.style.opacity = 0;
+            setTimeout(() => {
+                currentIdx = (currentIdx + 1) % creators.length;
+                el.innerText = creators[currentIdx];
+                el.style.opacity = 1;
+            }, 500);
+        }, 3000);
+
+        // بيانات السكربتات
+        const scriptsData = [{ name: "Timebomb Script", id: "script-timebomb" }];
+
+        function showSuggestions() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const box = document.getElementById('suggestionsBox');
+            box.innerHTML = '';
+            if (input.trim() === "") { box.style.display = 'none'; return; }
             
-            for (let i = 0; i < items.length; i++) {
-                let name = items[i].getElementsByClassName('script-name')[0].innerText.toLowerCase();
-                if (name.includes(input)) {
-                    items[i].style.display = "";
-                } else {
-                    items[i].style.display = "none";
-                }
-            }
+            const filtered = scriptsData.filter(s => s.name.toLowerCase().includes(input));
+            if (filtered.length > 0) {
+                box.style.display = 'block';
+                filtered.forEach(s => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.innerText = s.name;
+                    div.onclick = () => selectScript(s.id, s.name);
+                    box.appendChild(div);
+                });
+            } else { box.style.display = 'none'; }
         }
 
-        // وظيفة النسخ
+        function selectScript(id, name) {
+            const item = document.getElementById(id);
+            document.getElementById('searchInput').value = name;
+            document.getElementById('suggestionsBox').style.display = 'none';
+            
+            // إخفاء الأقسام الرئيسية
+            document.getElementById('statsSection').style.display = 'none';
+            document.getElementById('featuresSection').style.display = 'none';
+
+            // إظهار السكربت بتأثير سموث
+            item.classList.add('active');
+        }
+
+        function goBack() {
+            document.querySelectorAll('.script-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('statsSection').style.display = 'grid';
+            document.getElementById('featuresSection').style.display = 'grid';
+            document.getElementById('searchInput').value = '';
+        }
+
         function copy(id) {
             const text = document.getElementById(id).innerText;
             navigator.clipboard.writeText(text);
-            alert("تم نسخ السكربت بنجاح!");
+            
+            // تغيير نص الزر مؤقتاً للتأكيد
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "✅ تم النسخ";
+            btn.style.background = "#4caf50";
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = "var(--primary)";
+            }, 2000);
         }
+
+        // عداد مستخدمين وهمي بسيط للجمالية
+        setInterval(() => {
+            const el = document.getElementById("onlineUser");
+            let val = parseInt(el.innerText);
+            el.innerText = val + (Math.random() > 0.5 ? 1 : -1);
+        }, 4000);
     </script>
 </body>
 </html>
