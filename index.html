@@ -8,161 +8,250 @@
         :root {
             --primary: #6a1b9a;
             --accent: #bb86fc;
-            --bg: #0f0f0f;
-            --card-bg: #1a1a1a;
+            --bg: #0a0a0a;
+            --card-bg: rgba(20, 20, 20, 0.95);
+            --card-border: #222222;
         }
+
         body { 
-            background-color: var(--bg); 
+            background: linear-gradient(-45deg, #0a0a0a, #1a0a2a, #0a0a0a, #0f051a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: #ffffff; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0; min-height: 100vh;
         }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .header { 
             background: var(--primary); 
-            padding: 30px; 
+            padding: 50px 20px; 
             text-align: center;
-            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.5);
-            border-bottom: 2px solid var(--accent);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
         }
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+
+        .user-container {
+            margin-top: 15px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .user-tag {
+            font-weight: bold;
+            color: #fff;
+            background: rgba(0,0,0,0.4);
+            padding: 8px 25px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            display: none;
+            animation: slideFade 3s infinite;
+        }
+
+        @keyframes slideFade {
+            0% { opacity: 0; transform: translateY(10px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        .container { max-width: 1100px; margin: -30px auto 50px; padding: 0 20px; }
         
-        /* البحث */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 15px; padding: 25px; text-align: center;
+            backdrop-filter: blur(10px); transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .stat-card h3 { margin: 0; color: var(--accent); font-size: 1.3rem; }
+        .counter-num { font-size: 2.2rem; font-weight: bold; color: #fff; display: block; margin: 10px 0; }
+
         .search-container { margin-bottom: 30px; }
         #searchInput {
-            width: 100%;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 1px solid var(--primary);
-            background: #222;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            width: 100%; padding: 20px; border-radius: 50px;
+            border: 1px solid var(--primary); background: rgba(0,0,0,0.8);
+            color: white; font-size: 1.1rem; outline: none; text-align: center;
         }
 
-        /* المربعات والظلال */
-        .card { 
-            background: var(--card-bg); 
-            border: 1px solid #333; 
-            border-radius: 15px; 
-            padding: 25px; 
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(106, 27, 154, 0.2);
-            transition: 0.3s;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(106, 27, 154, 0.3); }
-
-        .key { color: var(--accent); font-weight: bold; }
-        pre { 
-            background: #000; 
-            padding: 15px; 
-            border-radius: 10px; 
-            text-align: left; 
-            overflow-x: auto; 
-            direction: ltr;
-            border: 1px solid #222;
+        #scriptsList { display: none; margin-bottom: 30px; }
+        .script-card { 
+            background: var(--card-bg); border: 1px solid var(--primary); 
+            border-radius: 20px; padding: 30px; animation: fadeIn 0.5s ease;
         }
 
-        /* الأزرار */
-        .btn { 
-            background: var(--primary); 
-            color: white; 
-            padding: 12px 25px; 
-            text-decoration: none; 
-            border-radius: 10px; 
-            border: none;
-            cursor: pointer; 
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        .btn:hover { background: #8e24aa; box-shadow: 0 0 15px var(--accent); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* قسم الديسكورد */
-        .discord-section {
-            background: #2c2f33;
+        /* مربع السيرفر بالرابط الجديد */
+        .server-box {
+            margin-top: 40px;
+            text-align: center;
+            padding: 25px;
+            background: rgba(106, 27, 154, 0.15);
+            border: 2px solid var(--primary);
             border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 50px;
-            border-left: 5px solid #7289da;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
         }
-        .discord-info { display: flex; align-items: center; }
-        .discord-logo { width: 50px; height: 50px; margin-left: 15px; }
-        .discord-btn { background: #7289da; }
-        .discord-btn:hover { background: #5b70b3; }
+
+        .btn-server {
+            display: inline-block;
+            background: #5865F2; 
+            color: white;
+            padding: 15px 45px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
+        }
+        .btn-server:hover { background: #4752c4; transform: translateY(-3px); }
+
+        pre { 
+            background: #000; padding: 20px; border-radius: 12px; 
+            text-align: left; overflow-x: auto; direction: ltr;
+            border: 1px solid #333; font-size: 0.95rem;
+        }
+
+        .btn-main { 
+            background: var(--primary); color: white; padding: 15px; 
+            border-radius: 12px; border: none; cursor: pointer; 
+            font-weight: bold; width: 100%; font-size: 1.1rem;
+        }
+
+        #toast {
+            visibility: hidden; min-width: 250px; background-color: #4caf50;
+            color: #fff; text-align: center; border-radius: 10px;
+            padding: 16px; position: fixed; z-index: 100; left: 50%;
+            bottom: 30px; transform: translateX(-50%);
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
     </style>
 </head>
 <body>
 
+    <div id="toast">تم النسخ بنجاح! ✅</div>
+
     <div class="header">
         <h1>ZQ HUB | Scripts</h1>
-        <p>أفضل السكربتات لسيرفرنا الخاص</p>
+        <div class="subtitle">ابحث عن السكربت المفضّل لديك</div>
+        
+        <div class="user-container">
+            <div class="user-tag" id="user1">BY: qwaw493</div>
+            <div class="user-tag" id="user2">BY: zeenko</div>
+            <div class="user-tag" id="user3">BY: astro_lol4</div>
+            <div class="user-tag" id="user4">BY: ZQ_OWNER</div> 
+        </div>
     </div>
 
     <div class="container">
-        <!-- شريط البحث -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>إحصائيات الاستخدام 📈</h3>
+                <span class="counter-num" id="copyCount">0</span>
+                <p>شخص نسخ السكربتات حتى الآن</p>
+            </div>
+            <div class="stat-card">
+                <h3>حماية متطورة 🛡️</h3>
+                <p>جميع السكربتات آمنة تماماً ومفحوصة لتجنب الباند.</p>
+            </div>
+            <div class="stat-card">
+                <h3>تحديثات يومية ⚡</h3>
+                <p>إضافة وتعديل سكربتات جديدة بشكل يومي.</p>
+            </div>
+        </div>
+
         <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: Timebomb)...">
+            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن اسم السكربت (مثلاً: Timebomb)...">
         </div>
 
-        <!-- السكربتات -->
         <div id="scriptsList">
-            <div class="card script-item">
-                <h2 class="script-name">Timebomb Script</h2>
-                <p>المفتاح: <span class="key">ZQ</span></p>
-                <pre id="code1">-- ZQ HUB Timebomb Script
-print("Timebomb Loaded!")
-loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
-                <button class="btn" onclick="copy('code1')">نسخ السكربت</button>
-            </div>
-
-            <div class="card script-item">
-                <h2 class="script-name">Auto Farm Script</h2>
-                <p>المفتاح: <span class="key">FREE</span></p>
-                <pre id="code2">-- ZQ HUB Auto Farm
-print("Auto Farm Active")</pre>
-                <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
+            <div class="script-card script-item">
+                <h2 style="margin-top:0;">Timebomb Script</h2>
+                <pre id="code1">loadstring(game:HttpGet("https://pastebin.com/raw/d1Bc8Rax"))()</pre>
+                <button class="btn-main" onclick="copyScript('code1')">نسخ السكربت</button>
             </div>
         </div>
 
-        <!-- مربع الديسكورد -->
-        <div class="discord-section">
-            <div class="discord-info">
-                <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo" class="discord-logo">
-                <div>
-                    <h3 style="margin:0;">انضم إلى سيرفرنا</h3>
-                    <p style="margin:0; font-size: 0.9rem; color: #ccc;">كن أول من يحصل على التحديثات</p>
-                </div>
-            </div>
-            <a href="https://discord.gg/guw2ac94E" target="_blank" class="btn discord-btn">دخول السيرفر</a>
+        <div class="server-box">
+            <h3 style="margin-top:0;">سيرفرنا الرسمي 🚀</h3>
+            <p>انضم إلينا للحصول على الدعم الفني وآخر التحديثات.</p>
+            <a href="https://discord.gg/7b3QV4Jjg" target="_blank" class="btn-server">دخول سيرفر ديسكورد</a>
         </div>
     </div>
 
     <script>
-        // وظيفة البحث
+        let currentUserId = 1;
+        const totalUsers = 4;
+        function rotateUsers() {
+            for (let i = 1; i <= totalUsers; i++) { document.getElementById(`user${i}`).style.display = 'none'; }
+            document.getElementById(`user${currentUserId}`).style.display = 'block';
+            currentUserId = currentUserId >= totalUsers ? 1 : currentUserId + 1;
+        }
+        setInterval(rotateUsers, 3000);
+        rotateUsers();
+
+        const namespace = "zqhub_final_ver_v7";
+        const countKey = "total_hits";
+
+        async function loadCounter() {
+            try {
+                const res = await fetch(`https://api.countapi.xyz/get/${namespace}/${countKey}`);
+                const data = await res.json();
+                document.getElementById('copyCount').innerText = data.value || 0;
+            } catch(e) { document.getElementById('copyCount').innerText = "0"; }
+        }
+        loadCounter();
+
         function searchFunction() {
             let input = document.getElementById('searchInput').value.toLowerCase();
+            let list = document.getElementById('scriptsList');
             let items = document.getElementsByClassName('script-item');
-            
-            for (let i = 0; i < items.length; i++) {
-                let name = items[i].getElementsByClassName('script-name')[0].innerText.toLowerCase();
-                if (name.includes(input)) {
-                    items[i].style.display = "";
-                } else {
-                    items[i].style.display = "none";
+            if (input.length > 0) {
+                list.style.display = "block";
+                for (let i = 0; i < items.length; i++) {
+                    let name = items[i].querySelector('h2').innerText.toLowerCase();
+                    items[i].style.display = name.includes(input) ? "block" : "none";
                 }
-            }
+            } else { list.style.display = "none"; }
         }
 
-        // وظيفة النسخ
-        function copy(id) {
+        async function copyScript(id) {
             const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text);
-            alert("تم نسخ السكربت بنجاح!");
+            try {
+                await navigator.clipboard.writeText(text);
+                const res = await fetch(`https://api.countapi.xyz/hit/${namespace}/${countKey}`);
+                const data = await res.json();
+                document.getElementById('copyCount').innerText = data.value;
+                showToast();
+            } catch (err) { fallbackCopy(text); }
+        }
+
+        function fallbackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text; document.body.appendChild(textArea);
+            textArea.select(); document.execCommand('copy');
+            document.body.removeChild(textArea); showToast();
+        }
+
+        function showToast() {
+            const x = document.getElementById("toast");
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
         }
     </script>
 </body>
