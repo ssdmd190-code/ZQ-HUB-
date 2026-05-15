@@ -8,161 +8,194 @@
         :root {
             --primary: #6a1b9a;
             --accent: #bb86fc;
-            --bg: #0f0f0f;
-            --card-bg: #1a1a1a;
+            --bg: #0a0a0a;
+            --card-bg: rgba(20, 20, 20, 0.95);
         }
+
         body { 
-            background-color: var(--bg); 
+            background: #0a0a0a;
             color: #ffffff; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0;
-            padding: 0;
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; padding: 0; min-height: 100vh;
         }
-        .header { 
-            background: var(--primary); 
-            padding: 30px; 
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.5);
-            border-bottom: 2px solid var(--accent);
-        }
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+
+        .header { background: var(--primary); padding: 40px 20px; text-align: center; }
+        .user-container { margin-top: 10px; height: 30px; display: flex; justify-content: center; align-items: center; }
+        .user-tag { font-weight: bold; color: #fff; background: rgba(0,0,0,0.4); padding: 5px 20px; border-radius: 20px; display: none; }
+
+        .container { max-width: 1000px; margin: 20px auto; padding: 0 20px; }
         
-        /* البحث */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: var(--card-bg); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #222; }
+        .counter-num { font-size: 2rem; font-weight: bold; color: #fff; display: block; }
+
         .search-container { margin-bottom: 30px; }
         #searchInput {
-            width: 100%;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 1px solid var(--primary);
-            background: #222;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            width: 100%; padding: 15px; border-radius: 30px;
+            border: 1px solid var(--primary); background: #000; color: white; text-align: center;
         }
 
-        /* المربعات والظلال */
-        .card { 
-            background: var(--card-bg); 
-            border: 1px solid #333; 
-            border-radius: 15px; 
-            padding: 25px; 
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(106, 27, 154, 0.2);
-            transition: 0.3s;
+        /* ستايل الكي والنسخ مثل الصورة */
+        .script-card { 
+            background: var(--card-bg); border: 1px solid #333; border-radius: 20px; padding: 25px;
+            display: none; /* يظهر عند البحث فقط */
         }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(106, 27, 154, 0.3); }
-
-        .key { color: var(--accent); font-weight: bold; }
-        pre { 
-            background: #000; 
-            padding: 15px; 
-            border-radius: 10px; 
-            text-align: left; 
-            overflow-x: auto; 
-            direction: ltr;
-            border: 1px solid #222;
+        
+        .script-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        
+        .key-section {
+            background: rgba(106, 27, 154, 0.1); padding: 10px 15px; border-radius: 10px;
+            border: 1px dashed var(--accent); display: flex; align-items: center; gap: 10px;
         }
 
-        /* الأزرار */
-        .btn { 
-            background: var(--primary); 
-            color: white; 
-            padding: 12px 25px; 
-            text-decoration: none; 
-            border-radius: 10px; 
-            border: none;
-            cursor: pointer; 
-            font-weight: bold;
-            transition: 0.3s;
+        .code-box {
+            background: #000; border: 1px solid #333; border-radius: 12px;
+            padding: 15px; overflow-x: auto; font-family: monospace;
+            text-align: left; direction: ltr; margin-bottom: 15px; color: #ccc;
         }
-        .btn:hover { background: #8e24aa; box-shadow: 0 0 15px var(--accent); }
 
-        /* قسم الديسكورد */
-        .discord-section {
-            background: #2c2f33;
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 50px;
-            border-left: 5px solid #7289da;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        .btn-main { 
+            background: var(--primary); color: white; padding: 12px; border: none;
+            border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; font-size: 1rem;
         }
-        .discord-info { display: flex; align-items: center; }
-        .discord-logo { width: 50px; height: 50px; margin-left: 15px; }
-        .discord-btn { background: #7289da; }
-        .discord-btn:hover { background: #5b70b3; }
+        .btn-copy-key { background: var(--accent); color: #000; padding: 4px 10px; border-radius: 5px; font-size: 0.8rem; border: none; cursor: pointer; }
+
+        .server-box {
+            margin-top: 30px; text-align: center; padding: 20px;
+            background: rgba(88, 101, 242, 0.1); border: 2px solid #5865F2; border-radius: 15px;
+        }
+        .btn-server {
+            display: inline-block; background: #5865F2; color: white; padding: 12px 30px;
+            border-radius: 10px; text-decoration: none; font-weight: bold; margin-top: 10px;
+        }
+
+        #toast {
+            visibility: hidden; min-width: 200px; background: #4caf50; color: #fff;
+            text-align: center; border-radius: 10px; padding: 12px;
+            position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%);
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
 
+    <div id="toast">تم النسخ بنجاح! ✅</div>
+
     <div class="header">
         <h1>ZQ HUB | Scripts</h1>
         <p>أفضل السكربتات لسيرفرنا الخاص</p>
+        <div class="user-container">
+            <div class="user-tag" id="user1">BY: qwaw493</div>
+            <div class="user-tag" id="user2">BY: zeenko</div>
+            <div class="user-tag" id="user3">BY: astro_lol4</div>
+            <div class="user-tag" id="user4">BY: ZQ_OWNER</div>
+        </div>
     </div>
 
     <div class="container">
-        <!-- شريط البحث -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="counter-num" id="copyCount">0</span>
+                <p>إجمالي نسخ السكربتات</p>
+            </div>
+            <div class="stat-card">
+                <span style="color: #4caf50; font-weight: bold; font-size: 1.5rem;">Safe</span>
+                <p>حماية السكربتات</p>
+            </div>
+            <div class="stat-card">
+                <span style="color: var(--accent); font-weight: bold; font-size: 1.5rem;">28</span>
+                <p>متصل الآن</p>
+            </div>
+        </div>
+
         <div class="search-container">
             <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: Timebomb)...">
         </div>
 
-        <!-- السكربتات -->
         <div id="scriptsList">
-            <div class="card script-item">
-                <h2 class="script-name">Timebomb Script</h2>
-                <p>المفتاح: <span class="key">ZQ</span></p>
-                <pre id="code1">-- ZQ HUB Timebomb Script
-print("Timebomb Loaded!")
-loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
-                <button class="btn" onclick="copy('code1')">نسخ السكربت</button>
-            </div>
-
-            <div class="card script-item">
-                <h2 class="script-name">Auto Farm Script</h2>
-                <p>المفتاح: <span class="key">FREE</span></p>
-                <pre id="code2">-- ZQ HUB Auto Farm
-print("Auto Farm Active")</pre>
-                <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
+            <div class="script-card script-item">
+                <div class="script-header">
+                    <h2 style="margin:0;">Timebomb Script</h2>
+                    <div class="key-section">
+                        <span>المفتاح: <b id="keyVal">ZQH_829376_JSORCQ</b></span>
+                        <button class="btn-copy-key" onclick="copySimple('keyVal')">نسخ المفتاح</button>
+                    </div>
+                </div>
+                <div class="code-box" id="code1">loadstring(game:HttpGet("https://pastebin.com/raw/d1Bc8Rax"))()</div>
+                <button class="btn-main" onclick="copyScript('code1')">نسخ السكربت</button>
             </div>
         </div>
 
-        <!-- مربع الديسكورد -->
-        <div class="discord-section">
-            <div class="discord-info">
-                <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo" class="discord-logo">
-                <div>
-                    <h3 style="margin:0;">انضم إلى سيرفرنا</h3>
-                    <p style="margin:0; font-size: 0.9rem; color: #ccc;">كن أول من يحصل على التحديثات</p>
-                </div>
-            </div>
-            <a href="https://discord.gg/guw2ac94E" target="_blank" class="btn discord-btn">دخول السيرفر</a>
+        <div class="server-box">
+            <h3>انضم لسيرفرنا الرسمي 🚀</h3>
+            <p>للحصول على الدعم الفني والمزيد من السكربتات</p>
+            <a href="https://discord.gg/7b3QV4Jjg" target="_blank" class="btn-server">دخول السيرفر</a>
         </div>
     </div>
 
     <script>
-        // وظيفة البحث
+        // نظام تبديل اليوزرات
+        let currentU = 1;
+        function rotateU() {
+            for(let i=1; i<=4; i++) document.getElementById('user'+i).style.display = 'none';
+            document.getElementById('user'+currentU).style.display = 'block';
+            currentU = currentU >= 4 ? 1 : currentU + 1;
+        }
+        setInterval(rotateU, 3000); rotateU();
+
+        // العداد والبحث
+        const ns = "zq_final_fix_1";
+        async function loadC() {
+            try {
+                const r = await fetch(`https://api.countapi.xyz/get/${ns}/hits`);
+                const d = await r.json();
+                document.getElementById('copyCount').innerText = d.value || 0;
+            } catch(e) { document.getElementById('copyCount').innerText = "0"; }
+        }
+        loadC();
+
         function searchFunction() {
             let input = document.getElementById('searchInput').value.toLowerCase();
+            let list = document.getElementById('scriptsList');
             let items = document.getElementsByClassName('script-item');
-            
-            for (let i = 0; i < items.length; i++) {
-                let name = items[i].getElementsByClassName('script-name')[0].innerText.toLowerCase();
-                if (name.includes(input)) {
-                    items[i].style.display = "";
-                } else {
-                    items[i].style.display = "none";
+            if (input.length > 0) {
+                list.style.display = "block";
+                for (let i = 0; i < items.length; i++) {
+                    let name = items[i].querySelector('h2').innerText.toLowerCase();
+                    items[i].style.display = name.includes(input) ? "block" : "none";
                 }
-            }
+            } else { list.style.display = "none"; }
         }
 
-        // وظيفة النسخ
-        function copy(id) {
+        async function copyScript(id) {
             const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text);
-            alert("تم نسخ السكربت بنجاح!");
+            try {
+                await navigator.clipboard.writeText(text);
+                const r = await fetch(`https://api.countapi.xyz/hit/${ns}/hits`);
+                const d = await r.json();
+                document.getElementById('copyCount').innerText = d.value;
+                showT();
+            } catch (err) { fallback(text); }
+        }
+
+        async function copySimple(id) {
+            const text = document.getElementById(id).innerText;
+            try { await navigator.clipboard.writeText(text); showT(); } catch (err) { fallback(text); }
+        }
+
+        function fallback(text) {
+            const t = document.createElement("textarea");
+            t.value = text; document.body.appendChild(t);
+            t.select(); document.execCommand('copy');
+            document.body.removeChild(t); showT();
+        }
+
+        function showT() {
+            const x = document.getElementById("toast");
+            x.className = "show";
+            setTimeout(function(){ x.className = ""; }, 3000);
         }
     </script>
 </body>
