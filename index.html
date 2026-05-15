@@ -6,163 +6,216 @@
     <title>ZQ HUB | Official Scripts</title>
     <style>
         :root {
-            --primary: #6a1b9a;
+            --primary: #4a148c; /* بنفسجي غامق فخم */
             --accent: #bb86fc;
-            --bg: #0f0f0f;
-            --card-bg: #1a1a1a;
+            --bg: #0a0a0a;
+            --card-bg: #121212;
+            --header-gradient: linear-gradient(135deg, #4a148c 0%, #1a1a1a 100%);
         }
         body { 
             background-color: var(--bg); 
             color: #ffffff; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             margin: 0;
             padding: 0;
         }
-        .header { 
-            background: var(--primary); 
-            padding: 30px; 
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.5);
-            border-bottom: 2px solid var(--accent);
-        }
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
         
-        /* البحث */
+        /* الهيدر الموحد والجذاب */
+        .header { 
+            background: var(--header-gradient); 
+            padding: 50px 20px; 
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            border-bottom: 3px solid var(--primary);
+        }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .header p { opacity: 0.8; font-size: 1.1rem; }
+
+        /* ميزة التبديل (الاون) المصلحة */
+        .on-toggle {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 25px;
+            border-radius: 50px;
+            border: 1px solid var(--accent);
+            font-weight: bold;
+            margin-top: 15px;
+            min-width: 150px;
+            transition: all 0.5s ease;
+        }
+
+        .container { max-width: 1000px; margin: -40px auto 30px; padding: 0 20px; position: relative; }
+
+        /* الإحصائيات كما في الصور */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #222;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            transition: 0.3s;
+        }
+        .stat-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .stat-card h2 { color: var(--accent); margin: 0; font-size: 2rem; }
+        .stat-card span { font-size: 0.9rem; color: #aaa; }
+
+        /* شريط البحث */
         .search-container { margin-bottom: 30px; }
         #searchInput {
             width: 100%;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 1px solid var(--primary);
-            background: #222;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 2px solid #222;
+            background: #151515;
             color: white;
             font-size: 1rem;
             outline: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transition: 0.3s;
+            text-align: center;
         }
+        #searchInput:focus { border-color: var(--primary); background: #1a1a1a; }
 
-        /* المربعات والظلال */
+        /* مربعات السكربتات */
         .card { 
             background: var(--card-bg); 
-            border: 1px solid #333; 
-            border-radius: 15px; 
-            padding: 25px; 
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(106, 27, 154, 0.2);
+            border: 1px solid #222; 
+            border-radius: 20px; 
+            padding: 30px; 
+            margin-bottom: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
             transition: 0.3s;
         }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(106, 27, 154, 0.3); }
+        .card:hover { border-color: var(--primary); }
 
-        .key { color: var(--accent); font-weight: bold; }
         pre { 
-            background: #000; 
-            padding: 15px; 
-            border-radius: 10px; 
+            background: #050505; 
+            padding: 20px; 
+            border-radius: 12px; 
             text-align: left; 
             overflow-x: auto; 
             direction: ltr;
-            border: 1px solid #222;
+            border: 1px solid #1a1a1a;
+            color: #d1d1d1;
+            font-family: 'Consolas', monospace;
         }
 
-        /* الأزرار */
         .btn { 
             background: var(--primary); 
             color: white; 
-            padding: 12px 25px; 
+            padding: 15px 35px; 
             text-decoration: none; 
-            border-radius: 10px; 
+            border-radius: 12px; 
             border: none;
             cursor: pointer; 
             font-weight: bold;
+            width: 100%;
+            font-size: 1.1rem;
             transition: 0.3s;
         }
-        .btn:hover { background: #8e24aa; box-shadow: 0 0 15px var(--accent); }
+        .btn:hover { background: #6a1b9a; transform: scale(1.02); box-shadow: 0 0 20px rgba(106, 27, 154, 0.5); }
 
-        /* قسم الديسكورد */
-        .discord-section {
-            background: #2c2f33;
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 50px;
-            border-left: 5px solid #7289da;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        /* تنبيه النسخ السلس */
+        #customAlert {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #2e7d32;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-weight: bold;
         }
-        .discord-info { display: flex; align-items: center; }
-        .discord-logo { width: 50px; height: 50px; margin-left: 15px; }
-        .discord-btn { background: #7289da; }
-        .discord-btn:hover { background: #5b70b3; }
+        #customAlert.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
 
+    <div id="customAlert">تم نسخ السكربت بنجاح! ✅</div>
+
     <div class="header">
         <h1>ZQ HUB | Scripts</h1>
         <p>أفضل السكربتات لسيرفرنا الخاص</p>
+        <div class="on-toggle" id="ownerName">By: astro_lol4</div>
     </div>
 
     <div class="container">
-        <!-- شريط البحث -->
-        <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: Timebomb)...">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h2>28</h2>
+                <span>متصل الآن</span>
+            </div>
+            <div class="stat-card">
+                <h2 style="color: #4caf50;">Safe</h2>
+                <span>حماية السكربتات</span>
+            </div>
+            <div class="stat-card">
+                <h2>+3,200</h2>
+                <span>تحميلات السكربتات</span>
+            </div>
         </div>
 
-        <!-- السكربتات -->
+        <div class="search-container">
+            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن اسم السكربت (مثلاً: Timebomb)...">
+        </div>
+
         <div id="scriptsList">
             <div class="card script-item">
                 <h2 class="script-name">Timebomb Script</h2>
-                <p>المفتاح: <span class="key">ZQ</span></p>
-                <pre id="code1">-- ZQ HUB Timebomb Script
-print("Timebomb Loaded!")
-loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
+                <p>المفتاح: <span class="key" style="color: var(--accent);">ZQ_OFFICIAL</span></p>
+                <pre id="code1">-- ZQ HUB Official Script
+loadstring(game:HttpGet("https://raw.githubusercontent.com/example/script"))()</pre>
                 <button class="btn" onclick="copy('code1')">نسخ السكربت</button>
             </div>
-
-            <div class="card script-item">
-                <h2 class="script-name">Auto Farm Script</h2>
-                <p>المفتاح: <span class="key">FREE</span></p>
-                <pre id="code2">-- ZQ HUB Auto Farm
-print("Auto Farm Active")</pre>
-                <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
-            </div>
-        </div>
-
-        <!-- مربع الديسكورد -->
-        <div class="discord-section">
-            <div class="discord-info">
-                <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo" class="discord-logo">
-                <div>
-                    <h3 style="margin:0;">انضم إلى سيرفرنا</h3>
-                    <p style="margin:0; font-size: 0.9rem; color: #ccc;">كن أول من يحصل على التحديثات</p>
-                </div>
-            </div>
-            <a href="https://discord.gg/guw2ac94E" target="_blank" class="btn discord-btn">دخول السيرفر</a>
         </div>
     </div>
 
     <script>
-        // وظيفة البحث
+        // نظام التبديل التلقائي (الاون المصلح)
+        const owners = ["By: astro_lol4", "By: zeenko", "By: qwaw493"];
+        let currentIndex = 0;
+        const ownerElement = document.getElementById('ownerName');
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % owners.length;
+            ownerElement.style.opacity = 0; // اخفاء مؤقت للأنيميشن
+            setTimeout(() => {
+                ownerElement.innerText = owners[currentIndex];
+                ownerElement.style.opacity = 1;
+            }, 500);
+        }, 4000);
+
         function searchFunction() {
             let input = document.getElementById('searchInput').value.toLowerCase();
             let items = document.getElementsByClassName('script-item');
-            
             for (let i = 0; i < items.length; i++) {
                 let name = items[i].getElementsByClassName('script-name')[0].innerText.toLowerCase();
-                if (name.includes(input)) {
-                    items[i].style.display = "";
-                } else {
-                    items[i].style.display = "none";
-                }
+                items[i].style.display = name.includes(input) ? "" : "none";
             }
         }
 
-        // وظيفة النسخ
         function copy(id) {
             const text = document.getElementById(id).innerText;
             navigator.clipboard.writeText(text);
-            alert("تم نسخ السكربت بنجاح!");
+            
+            const alertBox = document.getElementById("customAlert");
+            alertBox.className = "show";
+            setTimeout(() => { alertBox.className = alertBox.className.replace("show", ""); }, 3000);
         }
     </script>
 </body>
