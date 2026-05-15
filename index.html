@@ -3,166 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZQ HUB | Official Scripts</title>
+    <title>ZQ HUB | Scripts</title>
     <style>
         :root {
-            --primary: #6a1b9a;
+            --primary: #4a148c;
             --accent: #bb86fc;
-            --bg: #0f0f0f;
-            --card-bg: #1a1a1a;
+            --bg: #0a0a0a;
+            --card-bg: rgba(18, 18, 18, 0.95);
         }
+
         body { 
             background-color: var(--bg); 
             color: #ffffff; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0;
-            padding: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            margin: 0; padding: 0;
+            overflow-x: hidden;
         }
-        .header { 
-            background: var(--primary); 
-            padding: 30px; 
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.5);
-            border-bottom: 2px solid var(--accent);
-        }
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
-        
-        /* البحث */
-        .search-container { margin-bottom: 30px; }
-        #searchInput {
+
+        /* حاوية الخلفية المتحركة */
+        #particles-js {
+            position: fixed;
             width: 100%;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 1px solid var(--primary);
-            background: #222;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
         }
 
-        /* المربعات والظلال */
-        .card { 
-            background: var(--card-bg); 
-            border: 1px solid #333; 
-            border-radius: 15px; 
-            padding: 25px; 
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(106, 27, 154, 0.2);
+        .header { 
+            background: linear-gradient(135deg, rgba(74, 20, 140, 0.8) 0%, rgba(10, 10, 10, 0.9) 100%);
+            padding: 50px 20px; text-align: center;
+            border-bottom: 2px solid var(--primary);
+            position: relative;
+        }
+
+        .owner-box {
+            height: 40px; margin-top: 15px;
+            display: flex; justify-content: center; align-items: center;
+        }
+        #ownerName {
+            background: rgba(187, 134, 252, 0.1);
+            padding: 5px 20px; border-radius: 20px;
+            border: 1px solid var(--accent);
+            font-weight: bold; font-size: 0.9rem;
+            transition: all 0.8s ease;
+        }
+
+        .container { max-width: 1000px; margin: -30px auto 50px; padding: 0 20px; position: relative; z-index: 1; }
+
+        /* الإحصائيات */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px; margin-bottom: 30px;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            padding: 25px; border-radius: 15px;
+            text-align: center; border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+        .stat-card h2 { color: var(--accent); margin: 0; font-size: 1.8rem; }
+        .stat-card p { margin: 8px 0 0; font-size: 0.9rem; color: #aaa; }
+
+        /* البحث */
+        .search-container { margin-bottom: 40px; }
+        #searchInput {
+            width: 100%; padding: 18px 25px; border-radius: 35px;
+            border: 1px solid var(--primary); background: rgba(21, 21, 21, 0.9);
+            color: white; font-size: 1.1rem; outline: none; text-align: center;
+            box-shadow: 0 0 25px rgba(74, 20, 140, 0.2);
             transition: 0.3s;
         }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(106, 27, 154, 0.3); }
+        #searchInput:focus { box-shadow: 0 0 35px rgba(187, 134, 252, 0.4); border-color: var(--accent); }
 
-        .key { color: var(--accent); font-weight: bold; }
+        /* السكربتات بظهور سموث */
+        #scriptsList { display: none; }
+        .script-card { 
+            background: var(--card-bg); border: 1px solid #333; 
+            border-radius: 25px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            transform: translateY(30px); opacity: 0;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+        }
+        .script-card.active { transform: translateY(0); opacity: 1; }
+
+        .key-section {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px; border-radius: 12px;
+            margin-bottom: 20px; border: 1px dashed #444;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
         pre { 
-            background: #000; 
-            padding: 15px; 
-            border-radius: 10px; 
-            text-align: left; 
-            overflow-x: auto; 
-            direction: ltr;
-            border: 1px solid #222;
+            background: #000; padding: 20px; border-radius: 12px; 
+            text-align: left; overflow-x: auto; direction: ltr;
+            border: 1px solid #222; color: #d1d1d1; font-size: 0.95rem;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
 
-        /* الأزرار */
-        .btn { 
-            background: var(--primary); 
-            color: white; 
-            padding: 12px 25px; 
-            text-decoration: none; 
-            border-radius: 10px; 
-            border: none;
-            cursor: pointer; 
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        .btn:hover { background: #8e24aa; box-shadow: 0 0 15px var(--accent); }
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
 
-        /* قسم الديسكورد */
-        .discord-section {
-            background: #2c2f33;
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 50px;
-            border-left: 5px solid #7289da;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        .btn-main { 
+            flex: 2; background: var(--primary); color: white; padding: 15px; 
+            border-radius: 12px; border: none; cursor: pointer; 
+            font-weight: bold; font-size: 1.1rem; transition: 0.3s;
         }
-        .discord-info { display: flex; align-items: center; }
-        .discord-logo { width: 50px; height: 50px; margin-left: 15px; }
-        .discord-btn { background: #7289da; }
-        .discord-btn:hover { background: #5b70b3; }
+        .btn-sec { 
+            flex: 1; background: #333; color: white; padding: 15px; 
+            border-radius: 12px; border: none; cursor: pointer; 
+            font-weight: bold; transition: 0.3s;
+        }
+        .btn-main:hover { background: #6a1b9a; transform: scale(1.02); }
+        .btn-sec:hover { background: #444; }
+
+        /* التنبيه الأخضر */
+        #toast {
+            visibility: hidden; min-width: 280px; background-color: #4caf50;
+            color: white; text-align: center; border-radius: 12px; padding: 16px;
+            position: fixed; z-index: 2000; left: 50%; bottom: 40px;
+            transform: translateX(-50%); font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        #toast.show { visibility: visible; animation: slideUp 0.5s, fadeOut 0.5s 2.5s; }
+        @keyframes slideUp { from {bottom: 0; opacity: 0;} to {bottom: 40px; opacity: 1;} }
+        @keyframes fadeOut { from {opacity: 1;} to {opacity: 0;} }
     </style>
 </head>
 <body>
 
+    <div id="particles-js"></div>
+
+    <div id="toast">تم النسخ بنجاح! ✅</div>
+
     <div class="header">
-        <h1>ZQ HUB | Scripts</h1>
-        <p>أفضل السكربتات لسيرفرنا الخاص</p>
+        <h1 style="margin:0; font-size: 2.8rem; letter-spacing: 2px;">ZQ HUB | Scripts</h1>
+        <p style="margin-top:10px; opacity: 0.8;">بوابتك لأقوى السكربتات الحصرية</p>
+        <div class="owner-box">
+            <div id="ownerName">BY: astro_lol4</div>
+        </div>
     </div>
 
     <div class="container">
-        <!-- شريط البحث -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h2>28</h2>
+                <p>متصل الآن 👥</p>
+            </div>
+            <div class="stat-card">
+                <h2 style="color: #4caf50;">Safe</h2>
+                <p>حماية السكربتات 🛡️</p>
+            </div>
+            <div class="stat-card">
+                <h2>+3,200</h2>
+                <p>إجمالي الاستخدام 📈</p>
+            </div>
+        </div>
+
         <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: Timebomb)...">
+            <input type="text" id="searchInput" onkeyup="searchScript()" placeholder="اكتب اسم السكربت (مثال: Timebomb)...">
         </div>
 
-        <!-- السكربتات -->
         <div id="scriptsList">
-            <div class="card script-item">
-                <h2 class="script-name">Timebomb Script</h2>
-                <p>المفتاح: <span class="key">ZQ</span></p>
-                <pre id="code1">-- ZQ HUB Timebomb Script
-print("Timebomb Loaded!")
-loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
-                <button class="btn" onclick="copy('code1')">نسخ السكربت</button>
-            </div>
-
-            <div class="card script-item">
-                <h2 class="script-name">Auto Farm Script</h2>
-                <p>المفتاح: <span class="key">FREE</span></p>
-                <pre id="code2">-- ZQ HUB Auto Farm
-print("Auto Farm Active")</pre>
-                <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
-            </div>
-        </div>
-
-        <!-- مربع الديسكورد -->
-        <div class="discord-section">
-            <div class="discord-info">
-                <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo" class="discord-logo">
-                <div>
-                    <h3 style="margin:0;">انضم إلى سيرفرنا</h3>
-                    <p style="margin:0; font-size: 0.9rem; color: #ccc;">كن أول من يحصل على التحديثات</p>
+            <div class="script-card" data-name="timebomb">
+                <h2 style="margin-top:0; color: var(--accent);">Timebomb Script</h2>
+                <div class="key-section">
+                    <div>المفتاح: <span id="keyText" style="color:white; font-family: monospace;">ZQHUB_829376_JSORCQ</span></div>
+                    <button class="btn-sec" onclick="copyValue('ZQHUB_829376_JSORCQ', 'تم نسخ المفتاح!')" style="padding: 8px 15px; font-size: 0.8rem;">نسخ الكي</button>
+                </div>
+                <pre id="code1">loadstring(game:HttpGet("https://pastebin.com/raw/d1Bc8Rax"))()</pre>
+                <div class="btn-group">
+                    <button class="btn-main" onclick="copyValue(document.getElementById('code1').innerText, 'تم نسخ السكربت!')">نسخ السكربت</button>
                 </div>
             </div>
-            <a href="https://discord.gg/guw2ac94E" target="_blank" class="btn discord-btn">دخول السيرفر</a>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // وظيفة البحث
-        function searchFunction() {
+        // إعداد الخلفية المتحركة
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80 },
+                "color": { "value": "#bb86fc" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5 },
+                "size": { "value": 3 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#4a148c", "opacity": 0.4, "width": 1 },
+                "move": { "enable": true, "speed": 2 }
+            },
+            "interactivity": {
+                "events": { "onhover": { "enable": true, "mode": "repulse" } }
+            }
+        });
+
+        // تبديل الأسماء
+        const names = ["BY: astro_lol4", "BY: zeenko", "BY: qwaw493"];
+        let currentIdx = 0;
+        setInterval(() => {
+            const el = document.getElementById('ownerName');
+            el.style.opacity = 0;
+            setTimeout(() => {
+                currentIdx = (currentIdx + 1) % names.length;
+                el.innerText = names[currentIdx];
+                el.style.opacity = 1;
+            }, 800);
+        }, 4000);
+
+        // البحث مع أنيميشن سموث
+        function searchScript() {
             let input = document.getElementById('searchInput').value.toLowerCase();
-            let items = document.getElementsByClassName('script-item');
+            let list = document.getElementById('scriptsList');
+            let cards = document.getElementsByClassName('script-card');
             
-            for (let i = 0; i < items.length; i++) {
-                let name = items[i].getElementsByClassName('script-name')[0].innerText.toLowerCase();
-                if (name.includes(input)) {
-                    items[i].style.display = "";
-                } else {
-                    items[i].style.display = "none";
+            if (input.length > 0) {
+                list.style.display = "block";
+                for (let card of cards) {
+                    if (card.getAttribute('data-name').includes(input)) {
+                        setTimeout(() => card.classList.add('active'), 10);
+                        card.style.display = "block";
+                    } else {
+                        card.classList.remove('active');
+                        card.style.display = "none";
+                    }
                 }
+            } else {
+                list.style.display = "none";
             }
         }
 
-        // وظيفة النسخ
-        function copy(id) {
-            const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text);
-            alert("تم نسخ السكربت بنجاح!");
+        // وظيفة النسخ الموحدة
+        function copyValue(text, message) {
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById("toast");
+                toast.innerText = message + " ✅";
+                toast.className = "show";
+                setTimeout(() => { toast.className = ""; }, 3000);
+            });
         }
     </script>
 </body>
