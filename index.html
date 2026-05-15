@@ -8,161 +8,203 @@
         :root {
             --primary: #6a1b9a;
             --accent: #bb86fc;
-            --bg: #0f0f0f;
-            --card-bg: #1a1a1a;
-        }
-        body { 
-            background-color: var(--bg); 
-            color: #ffffff; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0;
-            padding: 0;
-        }
-        .header { 
-            background: var(--primary); 
-            padding: 30px; 
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.5);
-            border-bottom: 2px solid var(--accent);
-        }
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
-        
-        /* البحث */
-        .search-container { margin-bottom: 30px; }
-        #searchInput {
-            width: 100%;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 1px solid var(--primary);
-            background: #222;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            --bg: #0a0a0a;
+            --card-bg: #141414;
         }
 
-        /* المربعات والظلال */
+        /* الخلفية الجذابة الخافتة */
+        body { 
+            background: radial-gradient(circle at 50% 50%, #1a0a2a 0%, #0a0a0a 100%);
+            color: #ffffff; 
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            margin: 0; padding: 0; min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* لمعان خافت يتحرك في الخلفية */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(106, 27, 154, 0.05) 0%, transparent 40%);
+            animation: moveGlow 15s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes moveGlow {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(10%, 10%); }
+            100% { transform: translate(0, 0); }
+        }
+
+        .header { 
+            background: linear-gradient(to bottom, var(--primary), rgba(106, 27, 154, 0.8)); 
+            padding: 40px 20px; 
+            text-align: center;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        /* نظام تبديل اليوزرات السموث */
+        .user-switcher {
+            margin-top: 15px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .user-tag {
+            position: absolute;
+            font-weight: bold;
+            background: rgba(0,0,0,0.4);
+            padding: 5px 25px;
+            border-radius: 20px;
+            border: 1px solid var(--accent);
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            transform: scale(0.9);
+        }
+
+        .user-tag.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .container { max-width: 900px; margin: -20px auto 50px; padding: 0 20px; }
+        
+        .search-container { margin-bottom: 30px; }
+        #searchInput {
+            width: 100%; padding: 15px 25px; border-radius: 30px;
+            border: 1px solid var(--primary); background: rgba(0,0,0,0.8);
+            color: white; font-size: 1rem; outline: none; text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
         .card { 
             background: var(--card-bg); 
-            border: 1px solid #333; 
+            border: 1px solid #222; 
             border-radius: 15px; 
             padding: 25px; 
             margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(106, 27, 154, 0.2);
-            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(106, 27, 154, 0.3); }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
 
-        .key { color: var(--accent); font-weight: bold; }
+        .key { color: var(--accent); font-weight: bold; background: rgba(187, 134, 252, 0.1); padding: 2px 8px; border-radius: 5px; }
+
         pre { 
-            background: #000; 
-            padding: 15px; 
-            border-radius: 10px; 
-            text-align: left; 
-            overflow-x: auto; 
-            direction: ltr;
-            border: 1px solid #222;
+            background: #050505; padding: 15px; border-radius: 10px; 
+            text-align: left; overflow-x: auto; direction: ltr;
+            border: 1px solid #1a1a1a; color: #aaa; font-size: 0.9rem;
         }
 
-        /* الأزرار */
         .btn { 
-            background: var(--primary); 
-            color: white; 
-            padding: 12px 25px; 
-            text-decoration: none; 
-            border-radius: 10px; 
-            border: none;
-            cursor: pointer; 
-            font-weight: bold;
-            transition: 0.3s;
+            background: var(--primary); color: white; padding: 12px 0; 
+            border-radius: 10px; border: none; cursor: pointer; 
+            font-weight: bold; width: 100%; font-size: 1rem; transition: 0.3s;
         }
-        .btn:hover { background: #8e24aa; box-shadow: 0 0 15px var(--accent); }
+        .btn:hover { background: #7b1fa2; box-shadow: 0 0 20px rgba(106, 27, 154, 0.4); }
 
-        /* قسم الديسكورد */
+        /* الديسكورد - الرابط الجديد */
         .discord-section {
-            background: #2c2f33;
+            background: rgba(88, 101, 242, 0.05);
+            border: 1px solid #5865F2;
             border-radius: 15px;
             padding: 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-top: 50px;
-            border-left: 5px solid #7289da;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
-        .discord-info { display: flex; align-items: center; }
-        .discord-logo { width: 50px; height: 50px; margin-left: 15px; }
-        .discord-btn { background: #7289da; }
-        .discord-btn:hover { background: #5b70b3; }
+        .discord-btn { 
+            background: #5865F2; padding: 10px 25px; 
+            text-decoration: none; color: white; border-radius: 8px; font-weight: bold;
+        }
+
+        /* التنبيه (Toast) */
+        #toast {
+            visibility: hidden; min-width: 200px; background: #4caf50; color: white;
+            text-align: center; border-radius: 8px; padding: 12px;
+            position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%);
+            z-index: 1000;
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
 
+    <div id="toast">تم النسخ بنجاح! ✅</div>
+
     <div class="header">
-        <h1>ZQ HUB | Scripts</h1>
-        <p>أفضل السكربتات لسيرفرنا الخاص</p>
+        <h1 style="margin:0;">ZQ HUB | Scripts</h1>
+        <p style="opacity: 0.8; margin: 10px 0;">أفضل السكربتات لسيرفرنا الخاص</p>
+        
+        <div class="user-switcher">
+            <div class="user-tag active" id="u1">BY: qwaw493</div>
+            <div class="user-tag" id="u2">BY: zeenko</div>
+            <div class="user-tag" id="u3">BY: astro_lol4</div>
+            <div class="user-tag" id="u4">BY: ZQ_OWNER</div>
+        </div>
     </div>
 
     <div class="container">
-        <!-- شريط البحث -->
         <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: Timebomb)...">
+            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت هنا...">
         </div>
 
-        <!-- السكربتات -->
         <div id="scriptsList">
             <div class="card script-item">
-                <h2 class="script-name">Timebomb Script</h2>
-                <p>المفتاح: <span class="key">ZQ</span></p>
+                <h2 class="script-name" style="margin-top:0;">Timebomb Script</h2>
+                <p>المفتاح: <span class="key">ZQH_829376</span></p>
                 <pre id="code1">-- ZQ HUB Timebomb Script
-print("Timebomb Loaded!")
-loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
+loadstring(game:HttpGet("https://pastebin.com/raw/d1Bc8Rax"))()</pre>
                 <button class="btn" onclick="copy('code1')">نسخ السكربت</button>
-            </div>
-
-            <div class="card script-item">
-                <h2 class="script-name">Auto Farm Script</h2>
-                <p>المفتاح: <span class="key">FREE</span></p>
-                <pre id="code2">-- ZQ HUB Auto Farm
-print("Auto Farm Active")</pre>
-                <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
             </div>
         </div>
 
-        <!-- مربع الديسكورد -->
         <div class="discord-section">
-            <div class="discord-info">
-                <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo" class="discord-logo">
-                <div>
-                    <h3 style="margin:0;">انضم إلى سيرفرنا</h3>
-                    <p style="margin:0; font-size: 0.9rem; color: #ccc;">كن أول من يحصل على التحديثات</p>
-                </div>
+            <div>
+                <h3 style="margin:0;">انضم لسيرفرنا الرسمي</h3>
+                <p style="margin:5px 0 0; font-size:0.8rem; color:#888;">للحصول على الدعم الفني والمفاتيح</p>
             </div>
-            <a href="https://discord.gg/guw2ac94E" target="_blank" class="btn discord-btn">دخول السيرفر</a>
+            <a href="https://discord.gg/7b3QV4Jjg" target="_blank" class="discord-btn">دخول ديسكورد</a>
         </div>
     </div>
 
     <script>
-        // وظيفة البحث
+        // 1. نظام تبديل اليوزرات السموث (Smooth Fade)
+        let currentIndex = 1;
+        const total = 4;
+        function rotateUsers() {
+            document.getElementById(`u${currentIndex}`).classList.remove('active');
+            currentIndex = currentIndex >= total ? 1 : currentIndex + 1;
+            document.getElementById(`u${currentIndex}`).classList.add('active');
+        }
+        setInterval(rotateUsers, 4000);
+
+        // 2. وظيفة البحث
         function searchFunction() {
             let input = document.getElementById('searchInput').value.toLowerCase();
             let items = document.getElementsByClassName('script-item');
-            
             for (let i = 0; i < items.length; i++) {
-                let name = items[i].getElementsByClassName('script-name')[0].innerText.toLowerCase();
-                if (name.includes(input)) {
-                    items[i].style.display = "";
-                } else {
-                    items[i].style.display = "none";
-                }
+                let name = items[i].querySelector('.script-name').innerText.toLowerCase();
+                items[i].style.display = name.includes(input) ? "" : "none";
             }
         }
 
-        // وظيفة النسخ
+        // 3. وظيفة النسخ مع التنبيه
         function copy(id) {
             const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text);
-            alert("تم نسخ السكربت بنجاح!");
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById("toast");
+                toast.className = "show";
+                setTimeout(() => { toast.className = ""; }, 3000);
+            });
         }
     </script>
 </body>
