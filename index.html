@@ -8,161 +8,288 @@
         :root {
             --primary: #6a1b9a;
             --accent: #bb86fc;
-            --bg: #0f0f0f;
-            --card-bg: #1a1a1a;
+            --bg-color: #0a0a0a;
+            --card-bg: rgba(20, 20, 20, 0.9);
         }
+
+        /* 1. الخلفية الجذابة المتحركة */
         body { 
-            background-color: var(--bg); 
+            background: linear-gradient(-45deg, #0a0a0a, #1a0a2a, #0a0a0a, #16072b);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
             color: #ffffff; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0;
-            padding: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            margin: 0; padding: 0; min-height: 100vh;
+            overflow-x: hidden;
         }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .header { 
-            background: var(--primary); 
-            padding: 30px; 
+            background: rgba(106, 27, 154, 0.8); 
+            padding: 50px 20px; 
             text-align: center;
-            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.5);
-            border-bottom: 2px solid var(--accent);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
         }
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+
+        /* 2. أنيميشن تبديل اليوزرات الناعم */
+        .user-container {
+            margin-top: 20px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .user-tag {
+            position: absolute;
+            font-weight: bold;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 30px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            border: 1px solid var(--accent);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* نعومة فائقة */
+        }
+
+        .user-tag.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .user-tag.exit {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .container { max-width: 1000px; margin: -30px auto 50px; padding: 0 20px; }
         
+        /* المربعات العلوية */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            border-radius: 15px; padding: 25px; text-align: center;
+            backdrop-filter: blur(15px); transition: 0.3s;
+        }
+
+        .counter-num { font-size: 2.2rem; font-weight: bold; color: var(--accent); display: block; }
+
         /* البحث */
         .search-container { margin-bottom: 30px; }
         #searchInput {
-            width: 100%;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 1px solid var(--primary);
-            background: #222;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            width: 100%; padding: 18px; border-radius: 50px;
+            border: 2px solid var(--primary); background: rgba(0,0,0,0.7);
+            color: white; font-size: 1.1rem; outline: none; text-align: center;
+            box-shadow: 0 0 20px rgba(106, 27, 154, 0.3);
         }
 
-        /* المربعات والظلال */
-        .card { 
-            background: var(--card-bg); 
-            border: 1px solid #333; 
-            border-radius: 15px; 
-            padding: 25px; 
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(106, 27, 154, 0.2);
-            transition: 0.3s;
+        /* كرت السكربت */
+        #scriptsList { display: none; }
+        .script-card { 
+            background: var(--card-bg); border: 1px solid var(--primary); 
+            border-radius: 20px; padding: 30px; border-left: 5px solid var(--accent);
         }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(106, 27, 154, 0.3); }
 
-        .key { color: var(--accent); font-weight: bold; }
+        .key-box {
+            background: rgba(255, 255, 255, 0.03); 
+            padding: 12px 20px; border-radius: 10px; 
+            margin-bottom: 15px; border: 1px dashed var(--accent);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
         pre { 
-            background: #000; 
-            padding: 15px; 
-            border-radius: 10px; 
-            text-align: left; 
-            overflow-x: auto; 
-            direction: ltr;
-            border: 1px solid #222;
+            background: #000; padding: 20px; border-radius: 12px; 
+            text-align: left; overflow-x: auto; direction: ltr;
+            border: 1px solid #333; color: #7f8c8d;
         }
 
-        /* الأزرار */
-        .btn { 
-            background: var(--primary); 
-            color: white; 
-            padding: 12px 25px; 
-            text-decoration: none; 
-            border-radius: 10px; 
-            border: none;
-            cursor: pointer; 
-            font-weight: bold;
-            transition: 0.3s;
+        .btn-main { 
+            background: var(--primary); color: white; padding: 14px; 
+            border-radius: 10px; border: none; cursor: pointer; 
+            font-weight: bold; width: 100%; font-size: 1.1rem; transition: 0.3s;
         }
-        .btn:hover { background: #8e24aa; box-shadow: 0 0 15px var(--accent); }
+        .btn-main:hover { background: #7b1fa2; transform: scale(1.02); }
 
-        /* قسم الديسكورد */
-        .discord-section {
-            background: #2c2f33;
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 50px;
-            border-left: 5px solid #7289da;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        .btn-small { 
+            background: var(--accent); color: #000; padding: 5px 15px; 
+            border-radius: 5px; border: none; cursor: pointer; font-weight: bold;
         }
-        .discord-info { display: flex; align-items: center; }
-        .discord-logo { width: 50px; height: 50px; margin-left: 15px; }
-        .discord-btn { background: #7289da; }
-        .discord-btn:hover { background: #5b70b3; }
+
+        /* المربع الأزرق (السيرفر) */
+        .server-box {
+            margin-top: 40px; text-align: center; padding: 30px;
+            background: rgba(88, 101, 242, 0.1); border: 2px solid #5865F2; border-radius: 15px;
+        }
+        .btn-server {
+            display: inline-block; background: #5865F2; color: white; padding: 15px 40px;
+            border-radius: 10px; text-decoration: none; font-weight: bold; transition: 0.3s;
+        }
+        .btn-server:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(88, 101, 242, 0.5); }
+
+        #toast {
+            visibility: hidden; min-width: 250px; background-color: #4caf50;
+            color: #fff; text-align: center; border-radius: 10px;
+            padding: 16px; position: fixed; z-index: 100; left: 50%;
+            bottom: 30px; transform: translateX(-50%);
+        }
+        #toast.show { visibility: visible; animation: fadeinout 3s; }
+        @keyframes fadeinout { 0% {bottom: 0; opacity: 0;} 20% {bottom: 30px; opacity: 1;} 80% {bottom: 30px; opacity: 1;} 100% {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
 
+    <div id="toast">تم النسخ بنجاح! ✅</div>
+
     <div class="header">
         <h1>ZQ HUB | Scripts</h1>
-        <p>أفضل السكربتات لسيرفرنا الخاص</p>
+        <div class="subtitle">ابحث عن السكربت المفضّل لديك</div>
+        
+        <div class="user-container">
+            <div class="user-tag" id="tag1">BY: qwaw493</div>
+            <div class="user-tag" id="tag2">BY: zeenko</div>
+            <div class="user-tag" id="tag3">BY: astro_lol4</div>
+            <div class="user-tag" id="tag4">BY: ZQ_OWNER</div>
+        </div>
     </div>
 
     <div class="container">
-        <!-- شريط البحث -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="counter-num" id="copyCount">0</span>
+                <p>إجمالي نسخ السكربتات 📈</p>
+            </div>
+            <div class="stat-card">
+                <span class="counter-num" style="color: #4caf50;">Safe</span>
+                <p>حماية السكربتات 🛡️</p>
+            </div>
+            <div class="stat-card">
+                <span class="counter-num" style="color: #3498db;">28</span>
+                <p>متصل الآن 👥</p>
+            </div>
+        </div>
+
         <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: Timebomb)...">
+            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن اسم السكربت (مثلاً: Timebomb)...">
         </div>
 
-        <!-- السكربتات -->
         <div id="scriptsList">
-            <div class="card script-item">
-                <h2 class="script-name">Timebomb Script</h2>
-                <p>المفتاح: <span class="key">ZQ</span></p>
-                <pre id="code1">-- ZQ HUB Timebomb Script
-print("Timebomb Loaded!")
-loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
-                <button class="btn" onclick="copy('code1')">نسخ السكربت</button>
-            </div>
-
-            <div class="card script-item">
-                <h2 class="script-name">Auto Farm Script</h2>
-                <p>المفتاح: <span class="key">FREE</span></p>
-                <pre id="code2">-- ZQ HUB Auto Farm
-print("Auto Farm Active")</pre>
-                <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
+            <div class="script-card script-item">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin:0;">Timebomb Script</h2>
+                    <div class="key-box" style="margin:0;">
+                        <span style="font-size: 0.9rem;">المفتاح: <b id="k1" style="color:var(--accent);">ZQHUB_829376_JSORCQ</b></span>
+                        <button class="btn-small" style="margin-right:10px;" onclick="copySimple('k1')">نسخ</button>
+                    </div>
+                </div>
+                <pre id="code1">loadstring(game:HttpGet("https://pastebin.com/raw/d1Bc8Rax"))()</pre>
+                <button class="btn-main" onclick="copyScript('code1')">نسخ السكربت الكامل</button>
             </div>
         </div>
 
-        <!-- مربع الديسكورد -->
-        <div class="discord-section">
-            <div class="discord-info">
-                <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo" class="discord-logo">
-                <div>
-                    <h3 style="margin:0;">انضم إلى سيرفرنا</h3>
-                    <p style="margin:0; font-size: 0.9rem; color: #ccc;">كن أول من يحصل على التحديثات</p>
-                </div>
-            </div>
-            <a href="https://discord.gg/guw2ac94E" target="_blank" class="btn discord-btn">دخول السيرفر</a>
+        <div class="server-box">
+            <h3 style="margin-top:0;">هل تحتاج مساعدة؟ سيرفرنا الرسمي متاح!</h3>
+            <a href="https://discord.gg/7b3QV4Jjg" target="_blank" class="btn-server">دخول سيرفر ديسكورد</a>
         </div>
     </div>
 
     <script>
-        // وظيفة البحث
-        function searchFunction() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let items = document.getElementsByClassName('script-item');
+        // 1. منطق الأنيميشن السموث لليوزرات
+        let userIndex = 1;
+        const totalU = 4;
+        
+        function rotateUsersSmooth() {
+            const currentTag = document.getElementById(`tag${userIndex}`);
             
-            for (let i = 0; i < items.length; i++) {
-                let name = items[i].getElementsByClassName('script-name')[0].innerText.toLowerCase();
-                if (name.includes(input)) {
-                    items[i].style.display = "";
-                } else {
-                    items[i].style.display = "none";
-                }
+            // 1. إضافة كلاس الخروج
+            if (currentTag.classList.contains('active')) {
+                currentTag.classList.remove('active');
+                currentTag.classList.add('exit');
             }
+
+            // 2. تحديد اليوزر التالي
+            userIndex = userIndex >= totalU ? 1 : userIndex + 1;
+            const nextTag = document.getElementById(`tag${userIndex}`);
+
+            // 3. إظهار اليوزر الجديد بعد انتهاء خروج القديم قليلاً
+            setTimeout(() => {
+                // تنظيف القديم
+                const allTags = document.querySelectorAll('.user-tag');
+                allTags.forEach(tag => tag.classList.remove('exit'));
+                
+                // تفعيل الجديد
+                nextTag.classList.add('active');
+            }, 800);
         }
 
-        // وظيفة النسخ
-        function copy(id) {
+        // تشغيل أول يوزر فوراً ثم التبديل كل 4 ثوانٍ
+        document.getElementById('tag1').classList.add('active');
+        setInterval(rotateUsersSmooth, 4000);
+
+        // 2. العداد والنسخ والبحث
+        const ns = "zqhub_pro_v9";
+        async function loadCounter() {
+            try {
+                const r = await fetch(`https://api.countapi.xyz/get/${ns}/hits`);
+                const d = await r.json();
+                document.getElementById('copyCount').innerText = d.value || 0;
+            } catch(e) { document.getElementById('copyCount').innerText = "0"; }
+        }
+        loadCounter();
+
+        function searchFunction() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let list = document.getElementById('scriptsList');
+            let items = document.getElementsByClassName('script-item');
+            if (input.length > 0) {
+                list.style.display = "block";
+                for (let i = 0; i < items.length; i++) {
+                    let name = items[i].querySelector('h2').innerText.toLowerCase();
+                    items[i].style.display = name.includes(input) ? "block" : "none";
+                }
+            } else { list.style.display = "none"; }
+        }
+
+        async function copyScript(id) {
             const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text);
-            alert("تم نسخ السكربت بنجاح!");
+            try {
+                await navigator.clipboard.writeText(text);
+                const r = await fetch(`https://api.countapi.xyz/hit/${ns}/hits`);
+                const d = await r.json();
+                document.getElementById('copyCount').innerText = d.value;
+                showToast();
+            } catch (err) { fallbackCopy(text); }
+        }
+
+        async function copySimple(id) {
+            const text = document.getElementById(id).innerText;
+            try { await navigator.clipboard.writeText(text); showToast(); } catch (err) { fallbackCopy(text); }
+        }
+
+        function fallbackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text; document.body.appendChild(textArea);
+            textArea.select(); document.execCommand('copy');
+            document.body.removeChild(textArea); showToast();
+        }
+
+        function showToast() {
+            const x = document.getElementById("toast");
+            x.className = "show";
+            setTimeout(function(){ x.className = ""; }, 3000);
         }
     </script>
 </body>
