@@ -1,168 +1,246 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZQ HUB | Official Scripts</title>
+    <title>ZQ HUB - Scripts Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Noto+Kufi+Arabic:wght@500;700&display=swap" rel="stylesheet">
+    
     <style>
-        :root {
-            --primary: #6a1b9a;
-            --accent: #bb86fc;
-            --bg: #0f0f0f;
-            --card-bg: #1a1a1a;
-        }
-        body { 
-            background-color: var(--bg); 
-            color: #ffffff; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        /* ==========================================================================
+           🎨 تنسيقات الـ CSS (هوية ZQ HUB البنفسجية والمظلمة)
+           ========================================================================== */
+        * {
             margin: 0;
             padding: 0;
-        }
-        .header { 
-            background: var(--primary); 
-            padding: 30px; 
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.5);
-            border-bottom: 2px solid var(--accent);
-        }
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
-        
-        /* البحث */
-        .search-container { margin-bottom: 30px; }
-        #searchInput {
-            width: 100%;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 1px solid var(--primary);
-            background: #222;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            box-sizing: border-box;
         }
 
-        /* المربعات والظلال */
-        .card { 
-            background: var(--card-bg); 
-            border: 1px solid #333; 
-            border-radius: 15px; 
-            padding: 25px; 
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(106, 27, 154, 0.2);
-            transition: 0.3s;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(106, 27, 154, 0.3); }
-
-        .key { color: var(--accent); font-weight: bold; }
-        pre { 
-            background: #000; 
-            padding: 15px; 
-            border-radius: 10px; 
-            text-align: left; 
-            overflow-x: auto; 
-            direction: ltr;
-            border: 1px solid #222;
-        }
-
-        /* الأزرار */
-        .btn { 
-            background: var(--primary); 
-            color: white; 
-            padding: 12px 25px; 
-            text-decoration: none; 
-            border-radius: 10px; 
-            border: none;
-            cursor: pointer; 
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        .btn:hover { background: #8e24aa; box-shadow: 0 0 15px var(--accent); }
-
-        /* قسم الديسكورد */
-        .discord-section {
-            background: #2c2f33;
-            border-radius: 15px;
-            padding: 20px;
+        body {
+            background-color: #0b0b0e; /* الخلفية الداكنة العميقة */
+            color: #ffffff;
+            font-family: 'Montserrat', 'Noto Kufi Arabic', sans-serif;
+            padding: 40px 20px;
             display: flex;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            margin-top: 50px;
-            border-left: 5px solid #7289da;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            min-height: 100vh;
         }
-        .discord-info { display: flex; align-items: center; }
-        .discord-logo { width: 50px; height: 50px; margin-left: 15px; }
-        .discord-btn { background: #7289da; }
-        .discord-btn:hover { background: #5b70b3; }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+        }
+
+        /* 📦 بطاقة السكربت الرئيسية المطابقة تماماً لتصميمك */
+        .script-card {
+            background-color: #111115; /* لون الحاوية الداخلي */
+            border-radius: 20px; /* الحواف الدائرية الكبيرة الاحترافية */
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 🔝 جزء الهيدر (ترتيب النص ليكون اسم المطور باليسار واسم السكربت باليمين) */
+        .script-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding-bottom: 5px;
+        }
+
+        /* 👑 تاغ المطور المطلوب بجانب السكربت (بالجه اليسرى) */
+        .developer-tag {
+            font-size: 22px;
+            font-weight: 700;
+            color: #bd24ff; /* اللون البنفسجي المضيء لـ ZQ HUB */
+            letter-spacing: 0.5px;
+        }
+
+        /* 📝 اسم السكربت (بالجهة اليمنى) */
+        .script-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        /* 🔐 حاوية الكي (المفتاح) مع زر النسخ الصغير */
+        .key-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: transparent;
+            border: 1px dashed rgba(255, 255, 255, 0.1); /* الإطار المقطع الخفيف المحيط بالكي */
+            padding: 15px 20px;
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .key-info {
+            font-size: 15px;
+            color: #e1e1e6;
+            direction: ltr; /* لترتيب النص الإنجليزي بشكل صحيح */
+        }
+
+        .key-text {
+            color: #ffffff;
+            font-weight: 600;
+            font-family: monospace;
+            margin-left: 5px;
+        }
+
+        /* 🔘 زر نسخ الكي الصغير */
+        .btn-copy-small {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+            padding: 6px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Montserrat', 'Noto Kufi Arabic', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .btn-copy-small:hover {
+            background-color: #ffffff;
+            color: #111115;
+            border-color: #ffffff;
+        }
+
+        /* 💻 صندوق عرض كود الـ loadstring الأسود */
+        .code-box {
+            background-color: #050507; /* اللون الأسود الكامل المخفي في الداخل */
+            padding: 18px 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            width: 100%;
+            text-align: left; /* جعل الكود يبدأ من اليسار */
+        }
+
+        .code-box code {
+            font-family: 'Courier New', Courier, monospace;
+            color: #e1e1e6;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        /* 🚀 الزر البنفسجي العريض السفلي لنسخ السكربت بالكامل */
+        .btn-main-copy {
+            background-color: #561ab3; /* البنفسجي الغامق المتناسق مع تصميمك الحالي */
+            color: #ffffff;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Noto Kufi Arabic', 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(86, 26, 179, 0.2);
+        }
+
+        .btn-main-copy:hover {
+            background-color: #6a24dc;
+            box-shadow: 0 6px 20px rgba(106, 36, 220, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* نوتفكيشن إشعار النسخ */
+        .toast-notification {
+            position: fixed;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #561ab3;
+            color: #ffffff;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: bottom 0.4s ease;
+            z-index: 1000;
+        }
+
+        .toast-notification.show {
+            bottom: 30px;
+        }
+
+        /*📱 التوافق مع شاشات الجوال */
+        @media (max-width: 650px) {
+            .script-header {
+                flex-direction: column-reverse;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .key-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .btn-copy-small {
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>ZQ HUB | Scripts</h1>
-        <p>أفضل السكربتات لسيرفرنا الخاص</p>
-    </div>
-
     <div class="container">
-        <!-- شريط البحث -->
-        <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: Timebomb)...">
-        </div>
-
-        <!-- السكربتات -->
-        <div id="scriptsList">
-            <div class="card script-item">
-                <h2 class="script-name">Timebomb Script</h2>
-                <p>المفتاح: <span class="key">ZQ</span></p>
-                <pre id="code1">-- ZQ HUB Timebomb Script
-print("Timebomb Loaded!")
-loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
-                <button class="btn" onclick="copy('code1')">نسخ السكربت</button>
+        
+        <div class="script-card">
+            
+            <div class="script-header">
+                <span class="developer-tag">Timebomb Script</span>
+                <h2 class="script-title">Made by Zenko</h2>
             </div>
-
-            <div class="card script-item">
-                <h2 class="script-name">Auto Farm Script</h2>
-                <p>المفتاح: <span class="key">FREE</span></p>
-                <pre id="code2">-- ZQ HUB Auto Farm
-print("Auto Farm Active")</pre>
-                <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
-            </div>
-        </div>
-
-        <!-- مربع الديسكورد -->
-        <div class="discord-section">
-            <div class="discord-info">
-                <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo" class="discord-logo">
-                <div>
-                    <h3 style="margin:0;">انضم إلى سيرفرنا</h3>
-                    <p style="margin:0; font-size: 0.9rem; color: #ccc;">كن أول من يحصل على التحديثات</p>
+            
+            <div class="key-container">
+                <button class="btn-copy-small" onclick="copyText('zqh_829376_jsorcq', 'تم نسخ الكي بنجاح!')">نسخ / Copy</button>
+                <div class="key-info">
+                    Key: <span class="key-text">zqh_829376_jsorcq</span> / الكي
                 </div>
             </div>
-            <a href="https://discord.gg/guw2ac94E" target="_blank" class="btn discord-btn">دخول السيرفر</a>
+            
+            <div class="code-box">
+                <code>loadstring(game:HttpGet("https://pastebin.com/raw/d1Bc8Rax"))()</code>
+            </div>
+            
+            <button class="btn-main-copy" onclick="copyText('loadstring(game:HttpGet(\'https://pastebin.com/raw/d1Bc8Rax\'))()', 'تم نسخ السكربت بنجاح!')">
+                نسخ السكربت / Copy Script
+            </button>
+            
         </div>
+        
     </div>
 
-    <script>
-        // وظيفة البحث
-        function searchFunction() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let items = document.getElementsByClassName('script-item');
-            
-            for (let i = 0; i < items.length; i++) {
-                let name = items[i].getElementsByClassName('script-name')[0].innerText.toLowerCase();
-                if (name.includes(input)) {
-                    items[i].style.display = "";
-                } else {
-                    items[i].style.display = "none";
-                }
-            }
-        }
+    <div id="toast" class="toast-notification">تم النسخ بنجاح!</div>
 
-        // وظيفة النسخ
-        function copy(id) {
-            const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text);
-            alert("تم نسخ السكربت بنجاح!");
+    <script>
+        function copyText(textToCopy, successMessage) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const toast = document.getElementById("toast");
+                toast.innerText = successMessage;
+                toast.classList.add("show");
+                
+                // إخفاء الإشعار بعد 3 ثوانٍ تلقائياً
+                setTimeout(() => {
+                    toast.classList.remove("show");
+                }, 3000);
+            }).catch(err => {
+                console.error('خطأ أثناء المحاولة: ', err);
+            });
         }
     </script>
 </body>
