@@ -10,6 +10,7 @@
             --accent: #bb86fc;
             --bg: #0f0f0f;
             --card-bg: #1a1a1a;
+            --success-glow: #2ecc71;
         }
         body { 
             background-color: var(--bg); 
@@ -53,7 +54,11 @@
         }
         .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(106, 27, 154, 0.3); }
 
-        .key { color: var(--accent); font-weight: bold; }
+        .key-wrapper {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        .key { color: var(--accent); font-weight: bold; font-family: monospace; }
         pre { 
             background: #000; 
             padding: 15px; 
@@ -65,6 +70,11 @@
         }
 
         /* الأزرار */
+        .buttons-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
         .btn { 
             background: var(--primary); 
             color: white; 
@@ -77,6 +87,14 @@
             transition: 0.3s;
         }
         .btn:hover { background: #8e24aa; box-shadow: 0 0 15px var(--accent); }
+        .btn-key {
+            background: #333;
+            border: 1px solid #444;
+        }
+        .btn-key:hover {
+            background: #444;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
 
         /* قسم الديسكورد */
         .discord-section {
@@ -94,6 +112,33 @@
         .discord-logo { width: 50px; height: 50px; margin-left: 15px; }
         .discord-btn { background: #7289da; }
         .discord-btn:hover { background: #5b70b3; }
+
+        /* إشعار التوهج الأخضر المستطيل */
+        .toast-notification {
+            position: fixed;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111;
+            color: #2ecc71;
+            border: 2px solid var(--success-glow);
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
+            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+            opacity: 0;
+            z-index: 9999;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toast-notification.show {
+            bottom: 30px;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -111,21 +156,29 @@
 
         <!-- السكربتات -->
         <div id="scriptsList">
+            <!-- سكربت Timebomb المعول -->
             <div class="card script-item">
                 <h2 class="script-name">Timebomb Script</h2>
-                <p>المفتاح: <span class="key">ZQ</span></p>
+                <div class="key-wrapper">المفتاح: <span class="key" id="key1">ZQHUB_829376_JSORCQ</span></div>
                 <pre id="code1">-- ZQ HUB Timebomb Script
 print("Timebomb Loaded!")
 loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
-                <button class="btn" onclick="copy('code1')">نسخ السكربت</button>
+                <div class="buttons-group">
+                    <button class="btn" onclick="copyText('code1', 'تم نسخ السكربت بنجاح!')">نسخ السكربت</button>
+                    <button class="btn btn-key" onclick="copyText('key1', 'تم نسخ المفتاح بنجاح!')">نسخ المفتاح</button>
+                </div>
             </div>
 
+            <!-- سكربت Auto Farm -->
             <div class="card script-item">
                 <h2 class="script-name">Auto Farm Script</h2>
-                <p>المفتاح: <span class="key">FREE</span></p>
+                <div class="key-wrapper">المفتاح: <span class="key" id="key2">FREE</span></div>
                 <pre id="code2">-- ZQ HUB Auto Farm
 print("Auto Farm Active")</pre>
-                <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
+                <div class="buttons-group">
+                    <button class="btn" onclick="copyText('code2', 'تم نسخ السكربت بنجاح!')">نسخ السكربت</button>
+                    <button class="btn btn-key" onclick="copyText('key2', 'تم نسخ المفتاح بنجاح!')">نسخ المفتاح</button>
+                </div>
             </div>
         </div>
 
@@ -141,6 +194,9 @@ print("Auto Farm Active")</pre>
             <a href="https://discord.gg/guw2ac94E" target="_blank" class="btn discord-btn">دخول السيرفر</a>
         </div>
     </div>
+
+    <!-- عنصر الإشعار النيون المخفي -->
+    <div id="toast" class="toast-notification">✓ تم النسخ بنجاح!</div>
 
     <script>
         // وظيفة البحث
@@ -158,11 +214,26 @@ print("Auto Farm Active")</pre>
             }
         }
 
-        // وظيفة النسخ
-        function copy(id) {
+        // وظيفة النسخ الذكية مع الإشعار النيون المطور
+        function copyText(id, successMessage) {
             const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text);
-            alert("تم نسخ السكربت بنجاح!");
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(successMessage);
+            }).catch(err => {
+                console.error('فشل في نسخ النص: ', err);
+            });
+        }
+
+        // إظهار إشعار النيون المخصص
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = "✓ " + message;
+            toast.classList.add('show');
+            
+            // إخفاء الإشعار بعد ثانيتين
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
         }
     </script>
 </body>
