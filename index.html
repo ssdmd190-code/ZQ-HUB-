@@ -39,9 +39,13 @@
             font-size: 1rem;
             outline: none;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            text-align: center;
         }
 
-        /* المربعات والظلال */
+        /* قائمة السكربتات مخفية في البداية */
+        #scriptsList { display: none; }
+
+        /* المربعات والظلال مع الأنيميشن السموث */
         .card { 
             background: var(--card-bg); 
             border: 1px solid #333; 
@@ -49,7 +53,15 @@
             padding: 25px; 
             margin-bottom: 25px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(106, 27, 154, 0.2);
-            transition: 0.3s;
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .card.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
         .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(106, 27, 154, 0.3); }
 
@@ -104,13 +116,19 @@
     </div>
 
     <div class="container">
-        <!-- شريط البحث -->
         <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: Timebomb)...">
+            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: MM2)...">
         </div>
 
-        <!-- السكربتات -->
         <div id="scriptsList">
+            <div class="card script-item">
+                <h2 class="script-name">MM2 script</h2>
+                <p>المفتاح: <span class="key">zq-2026</span></p>
+                <pre id="codeMM2">-- ZQ HUB MM2 Script
+loadstring(game:HttpGet("https://pastebin.com/raw/vNHXhg61"))()</pre>
+                <button class="btn" onclick="copy('codeMM2')">نسخ السكربت</button>
+            </div>
+
             <div class="card script-item">
                 <h2 class="script-name">Timebomb Script</h2>
                 <p>المفتاح: <span class="key">ZQ</span></p>
@@ -129,7 +147,6 @@ print("Auto Farm Active")</pre>
             </div>
         </div>
 
-        <!-- مربع الديسكورد -->
         <div class="discord-section">
             <div class="discord-info">
                 <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo" class="discord-logo">
@@ -143,22 +160,46 @@ print("Auto Farm Active")</pre>
     </div>
 
     <script>
-        // وظيفة البحث
+        // وظيفة البحث الذكي مع انيميشن الظهور السموث
         function searchFunction() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
+            let input = document.getElementById('searchInput').value.toLowerCase().trim();
+            let list = document.getElementById('scriptsList');
             let items = document.getElementsByClassName('script-item');
             
+            // إخفاء الكل إذا كان شريط البحث فارغاً
+            if (input === "") {
+                list.style.display = "none";
+                for (let i = 0; i < items.length; i++) {
+                    items[i].classList.remove('show');
+                }
+                return;
+            }
+
+            let hasMatch = false;
+
             for (let i = 0; i < items.length; i++) {
                 let name = items[i].getElementsByClassName('script-name')[0].innerText.toLowerCase();
+                
                 if (name.includes(input)) {
-                    items[i].style.display = "";
+                    list.style.display = "block";
+                    items[i].style.display = "block";
+                    // تفعيل تأثير الانيميشن بشكل متزامن ناعم
+                    setTimeout(() => {
+                        items[i].classList.add('show');
+                    }, 20);
+                    hasMatch = true;
                 } else {
+                    items[i].classList.remove('show');
                     items[i].style.display = "none";
                 }
             }
+
+            if (!hasMatch) {
+                list.style.display = "none";
+            }
         }
 
-        // وظيفة النسخ
+        // وظيفة النسخ الأصلية
         function copy(id) {
             const text = document.getElementById(id).innerText;
             navigator.clipboard.writeText(text);
