@@ -39,9 +39,15 @@
             font-size: 1rem;
             outline: none;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            text-align: center;
         }
 
-        /* المربعات والظلال */
+        /* قائمة السكربتات (مخفية بالكامل في البداية) */
+        #scriptsList {
+            display: none;
+        }
+
+        /* المربعات والظلال مع أنيميشن ناعم */
         .card { 
             background: var(--card-bg); 
             border: 1px solid #333; 
@@ -49,7 +55,15 @@
             padding: 25px; 
             margin-bottom: 25px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(106, 27, 154, 0.2);
-            transition: 0.3s;
+            display: none; /* مخفي الا في حال التطابق */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s;
+        }
+        .card.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
         .card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(106, 27, 154, 0.3); }
 
@@ -104,12 +118,10 @@
     </div>
 
     <div class="container">
-        <!-- شريط البحث -->
         <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: Timebomb)...">
+            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: MM2 أو Timebomb)...">
         </div>
 
-        <!-- السكربتات -->
         <div id="scriptsList">
             <div class="card script-item">
                 <h2 class="script-name">Timebomb Script</h2>
@@ -121,15 +133,22 @@ loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
             </div>
 
             <div class="card script-item">
+                <h2 class="script-name">MM2 script</h2>
+                <p>المفتاح: <span class="key">zq-2026</span></p>
+                <pre id="code2">-- ZQ HUB MM2 Script
+loadstring(game:HttpGet("https://pastebin.com/raw/vNHXhg61"))()</pre>
+                <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
+            </div>
+
+            <div class="card script-item">
                 <h2 class="script-name">Auto Farm Script</h2>
                 <p>المفتاح: <span class="key">FREE</span></p>
-                <pre id="code2">-- ZQ HUB Auto Farm
+                <pre id="code3">-- ZQ HUB Auto Farm
 print("Auto Farm Active")</pre>
-                <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
+                <button class="btn" onclick="copy('code3')">نسخ السكربت</button>
             </div>
         </div>
 
-        <!-- مربع الديسكورد -->
         <div class="discord-section">
             <div class="discord-info">
                 <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo" class="discord-logo">
@@ -143,18 +162,43 @@ print("Auto Farm Active")</pre>
     </div>
 
     <script>
-        // وظيفة البحث
+        // وظيفة البحث الذكي والظهور السلس
         function searchFunction() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
+            let input = document.getElementById('searchInput').value.toLowerCase().trim();
+            let list = document.getElementById('scriptsList');
             let items = document.getElementsByClassName('script-item');
             
+            // إذا كانت خانة البحث فارغة، تختفي القائمة تماماً
+            if (input === "") {
+                list.style.display = "none";
+                for (let i = 0; i < items.length; i++) {
+                    items[i].classList.remove('show');
+                }
+                return;
+            }
+
+            let hasMatch = false;
+
             for (let i = 0; i < items.length; i++) {
                 let name = items[i].getElementsByClassName('script-name')[0].innerText.toLowerCase();
+                
                 if (name.includes(input)) {
-                    items[i].style.display = "";
+                    list.style.display = "block";
+                    items[i].style.display = "block";
+                    // تأخير بسيط لتفعيل أنيميشن الـ CSS السلس
+                    setTimeout(() => {
+                        items[i].classList.add('show');
+                    }, 10);
+                    hasMatch = true;
                 } else {
+                    items[i].classList.remove('show');
                     items[i].style.display = "none";
                 }
+            }
+
+            // إذا لم يتطابق البحث مع أي سكربت تختفي القائمة
+            if (!hasMatch) {
+                list.style.display = "none";
             }
         }
 
