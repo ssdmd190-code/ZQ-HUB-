@@ -94,6 +94,11 @@
         .discord-logo { width: 50px; height: 50px; margin-left: 15px; }
         .discord-btn { background: #7289da; }
         .discord-btn:hover { background: #5b70b3; }
+
+        /* ستايل خاص لإخفاء سكربت MM2 في البداية */
+        .hidden-script {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -104,19 +109,15 @@
     </div>
 
     <div class="container">
-        <!-- شريط البحث -->
         <div class="search-container">
             <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="ابحث عن سكربت (مثال: Timebomb)...">
         </div>
 
-        <!-- السكربتات -->
         <div id="scriptsList">
             <div class="card script-item">
                 <h2 class="script-name">Timebomb Script</h2>
-                <p>المفتاح: <span class="key">ZQ</span></p>
-                <pre id="code1">-- ZQ HUB Timebomb Script
-print("Timebomb Loaded!")
-loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
+                <p>المفتاح: <span class="key">ZQ_OFFICIAL_829</span></p>
+                <pre id="code1">loadstring(game:HttpGet("https://pastebin.com/raw/dlBc8Rax"))()</pre>
                 <button class="btn" onclick="copy('code1')">نسخ السكربت</button>
             </div>
 
@@ -127,9 +128,15 @@ loadstring(game:HttpGet("رابط السكربت هنا"))()</pre>
 print("Auto Farm Active")</pre>
                 <button class="btn" onclick="copy('code2')">نسخ السكربت</button>
             </div>
+
+            <div class="card script-item hidden-script" id="mm2Card">
+                <h2 class="script-name">MM2 script</h2>
+                <p>المفتاح: <span class="key">zq-2026</span></p>
+                <pre id="codeMM2">loadstring(game:HttpGet("https://pastebin.com/raw/vNHXhg61"))()</pre>
+                <button class="btn" onclick="copy('codeMM2')">نسخ السكربت</button>
+            </div>
         </div>
 
-        <!-- مربع الديسكورد -->
         <div class="discord-section">
             <div class="discord-info">
                 <img src="https://assets-global.website-files.com/6257adef93867e3d0358864f/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo" class="discord-logo">
@@ -143,12 +150,17 @@ print("Auto Farm Active")</pre>
     </div>
 
     <script>
-        // وظيفة البحث
+        // وظيفة البحث الذكي المحسنة
         function searchFunction() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
+            let input = document.getElementById('searchInput').value.toLowerCase().trim();
             let items = document.getElementsByClassName('script-item');
+            let mm2Card = document.getElementById('mm2Card');
             
+            // الفلترة العادية لباقي السكربتات
             for (let i = 0; i < items.length; i++) {
+                // تخطي كرت MM2 في الفلترة العادية لكي نتحكم به بشكل منفصل
+                if (items[i].id === "mm2Card") continue;
+
                 let name = items[i].getElementsByClassName('script-name')[0].innerText.toLowerCase();
                 if (name.includes(input)) {
                     items[i].style.display = "";
@@ -156,9 +168,16 @@ print("Auto Farm Active")</pre>
                     items[i].style.display = "none";
                 }
             }
+
+            // التحكم الخاص بسكربت MM2: يظهر فقط إذا كتب المستخدم "mm2"
+            if (input.includes("mm2")) {
+                mm2Card.style.display = "block";
+            } else {
+                mm2Card.style.display = "none";
+            }
         }
 
-        // وظيفة النسخ
+        // وظيفة النسخ الأصيلة
         function copy(id) {
             const text = document.getElementById(id).innerText;
             navigator.clipboard.writeText(text);
